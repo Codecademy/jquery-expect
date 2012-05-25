@@ -119,6 +119,7 @@ describe('$expect', function () {
 
   it('should test text', function () {
     $expect('.link').to.have.text('google');
+    $expect('.link2').to.have.text('codecademy');
     $expect('.link').to.have.text('Google.', true);
 
     err(function () {

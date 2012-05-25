@@ -559,9 +559,9 @@
       strict = false;
     }
 
-    var re = /[\.,-\/#!$%\^&\*;:{}=\-_`~()\s]/g
+    var re = /[\.,-\/#!$%\^&\*;:{}=\-_`~()\s'"]/g
       , text = this.obj.text();
-
+console.log(text.replace(re, '').toLowerCase())
     this.assert(
         strict ? text === val
                : text.replace(re, '').toLowerCase() === val.replace(re, '').toLowerCase()
