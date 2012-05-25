@@ -1,10 +1,6 @@
 
 (function (global) {
 
-  /**
-   * Exports.
-   */
-
   global.$expect = $expect;
   $expect.Assertion = Assertion;
 
@@ -12,17 +8,43 @@
     return new Assertion(obj);
   }
 
+  /**
+   * Utilities
+   */
+
+  /**
+   * Object.keys
+   */
+
   function keys (obj) {
-    return $.map(obj, function (_, k) {
-      return k;
-    });
+    if (Object.keys) {
+      return Object.keys(obj);
+    }
+
+    var keys = [];
+
+    for (var i in obj) {
+      if (Object.prototype.hasOwnProperty.call(obj, i)) {
+        keys.push(i);
+      }
+    }
+
+    return keys;
   }
+
+  /**
+   * Inspect
+   */
 
   function i ($obj) {
     return $obj.selector;
   }
 
-  //source: http://wowmotty.blogspot.com/2009/06/convert-jquery-rgb-output-to-hex-color.html
+  /**
+   * Convert rgb(x, y, z) -> Hex
+   * source: http://wowmotty.blogspot.com/2009/06/convert-jquery-rgb-output-to-hex-color.html
+   */
+
   function rgb2hex (rgb) {
     rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
     return "#" +
@@ -31,7 +53,12 @@
       ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
   }
 
-  // source: http://www.w3.org/TR/css3-color/#svg-color
+  /**
+   * Extended css color names hash.
+   * name -> HEX
+   * source: http://www.w3.org/TR/css3-color/#svg-color
+   */
+
   var COLORS = {
     'aliceblue': '#F0F8FF'
   , 'antiquewhite': '#FAEBD7'
@@ -182,7 +209,6 @@
   , 'yellowgreen': '#9ACD32'
   };
 
-
   /**
    * Possible assertion flags.
    */
@@ -197,11 +223,10 @@
     , has: ['own']
     , be: ['an']
   };
-  
+
   /**
    * Constructor
-   *
-   * @api private
+   * from expect.js (copyright LearnBoost, MIT license)
    */
 
   function Assertion (obj, flag, parent) {
@@ -250,7 +275,10 @@
 
   /**
    * Performs an assertion
-   *
+   * 
+   * @param {Boolean} truth
+   * @param {String} msg
+   * @param {String} error
    * @api private
    */
 
@@ -280,7 +308,7 @@
   };
 
   /**
-   * Has n elements.
+   * Assert having _n_ elements.
    *
    * @param {Number} n
    * @api public
@@ -299,7 +327,7 @@
 
 
   /**
-   * Assert numeric value above _n_.
+   * Assert having elements greater than _n_ elements.
    *
    * @param {Number} n
    * @api public
@@ -316,7 +344,7 @@
 
 
   /**
-   * Assert numeric value below _n_.
+   * Assert having elements less than _n_ elements.
    *
    * @param {Number} n
    * @api public
@@ -332,7 +360,7 @@
   };
 
   /**
-   * Checks if the obj exactly equals another.
+   * Checks if a jQuery collection has exactly the same and no more elements than another one.
    *
    * @api public
    */
@@ -352,6 +380,12 @@
     return this;
   };
 
+  /**
+   * Asserts the value of an attribute on an element.
+   *
+   * @api public
+   */
+
   Assertion.prototype.attr = function (prop, val, msg) {
     var got;
     this.assert(
@@ -362,7 +396,10 @@
   };
 
 
-    // Given rgb or color name return the hex representation.
+  /**
+   * Takes color in any format and returns it in a HEX (uppercase) format.
+   */
+
   function normalizeColor (color) {
     if (!color) return '';
 
@@ -374,6 +411,10 @@
       return COLORS[$.trim(color)];
     }
   }
+
+  /**
+   * Breakdown shorthand css and compare each direction.
+   */
 
   function compareQuad ($el, prop, val) {
     var isColor = prop.match(/color/);
@@ -407,6 +448,10 @@
     return {passing: passing, got: got.join(' ')};
   }
 
+  /**
+   * Breakdown border shorthand css and compare each style.
+   */
+
   function borderQuad ($el, prop, val) {
     val = val.split(/\s/);
 
@@ -425,6 +470,12 @@
 
     return {passing: passing, got: got.join(' ')};
   }
+
+  /**
+   * Assert having a css value.
+   *
+   * @api public
+   */
 
   Assertion.prototype.css = function (prop, val, msg) {
     prop = $.trim(prop);
@@ -473,7 +524,7 @@
               return ret.got;
             });
 
-        // unique.
+        // Array unique.
         got = $.map(got, function (g) {
           return $.inArray(g, got) === -1 ? g : null;
         }).join(' ');
@@ -491,13 +542,24 @@
     return this;
   };
 
+
+  /**
+   * Asserts that an element has certain text. The check is loose by default, meaning punctuation
+   * and spaces are stripped out and case is ignored. Pass in true as the second argument for 
+   * strict equality.
+   *
+   * @param {String} val
+   * @param @optional {Boolean} strict 
+   * @api public
+   */
+
   Assertion.prototype.text = function (val, strict, msg) {
     if ('boolean' != typeof strict) {
       msg = strict;
       strict = false;
     }
 
-    var re = /[\.,-\/#!$%\^&\*;:{}=\-_`~()]/g
+    var re = /[\.,-\/#!$%\^&\*;:{}=\-_`~()\s]/g
       , text = this.obj.text();
 
     this.assert(
@@ -508,6 +570,14 @@
 
     return this;
   };
+
+
+  /**
+   * Asserts the value of the following jquery accessor functions.
+   *
+   * @param {Mixed} val
+   * @api public
+   */
 
   $.each([ 'html', 'val'
          , 'width', 'innerWidth', 'outerWidth'
@@ -523,6 +593,14 @@
             return this;
           };
         });
+
+  /**
+   * Asserts the existence of elements in different directions and traversal ways
+   * of the tree.
+   *
+   * @param {String|jQueryObject} val
+   * @api public
+   */
 
   $.each([ 'children', 'closest', 'find', 
          , 'next', 'nextAll', 'nextUntil'
@@ -547,6 +625,12 @@
   // alias
   Assertion.prototype.contain = Assertion.prototype.find;
 
+  /**
+   * Asserts the element(s) using the jquery is method.
+   *
+   * @api public
+   */
+
   Assertion.prototype.an =
   Assertion.prototype.a = function (obj, msg) {
     this.assert(
@@ -555,6 +639,12 @@
       , msg || 'x');
     return this;
   };
+
+  /**
+   * Returns a new assertion object after calling the jquery end method.
+   *
+   * @api public
+   */
 
   Assertion.prototype.end = function () {
     return new Assertion(this.obj.end());
