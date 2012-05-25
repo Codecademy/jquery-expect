@@ -8,21 +8,6 @@
   global.$expect = $expect;
   $expect.Assertion = Assertion;
 
-  /**
-   * Possible assertion flags.
-   */
-
-  var flags = {
-      not: ['to', 'be', 'have', 'include', 'only']
-    , to: ['be', 'have', 'include', 'only', 'not']
-    , is: []
-    , are: []
-    , only: ['have']
-    , have: ['own']
-    , has: ['own']
-    , be: ['an']
-  };
-
   function $expect (obj) {
     return new Assertion(obj);
   }
@@ -197,6 +182,22 @@
   , 'yellowgreen': '#9ACD32'
   };
 
+
+  /**
+   * Possible assertion flags.
+   */
+
+  var flags = {
+      not: ['to', 'be', 'have', 'include', 'only']
+    , to: ['be', 'have', 'include', 'only', 'not']
+    , is: []
+    , are: []
+    , only: ['have']
+    , have: ['own']
+    , has: ['own']
+    , be: ['an']
+  };
+  
   /**
    * Constructor
    *
