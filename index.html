@@ -1,0 +1,73 @@
+<!doctype html>
+<html>
+  <head>
+    <title>expect.js tests</title>
+    <link href="/support/mocha.css" rel="stylesheet" media="screen" />
+    <script src="/support/jquery.js"></script>
+    <script src="/support/mocha.js"></script>
+    <script>mocha.setup('bdd');</script>
+    <script src="/expect.js"></script>
+    <script src="/jquery-expect.js"></script>
+    <script src="/test/jquery-expect.js"></script>
+    <script>window.onload = mocha.run;</script>
+  </head>
+  <body>
+    <div id="mocha"></div>
+    <ul id="four-list">
+      <li class="item"></li>
+      <li class="item"></li>
+      <li class="item"></li>
+      <li class="item"></li>
+    </ul>
+    <a href="http://google.com" class="link" >Google.</a>
+    <span class="html"><a>XX</a><p>YY</p></span>
+    <input type="text" value="myval" class="val">
+    <div class="parent" style="position:relative">
+      <div class="child">
+        <div class="abs" style="position:absolute">a</div>
+      </div>
+    </div>
+    <ol class='order-list'>
+      <li class="first"></li>
+      <li class="second"></li>
+      <li class="third"></li>
+      <li class="fourth"></li>
+    </ol>
+    <div class="styles">
+      <style>
+        .dimensions {
+          width:50px;
+          height:50px;
+          border: 2px solid;
+          padding: 5px;
+        }
+        .red {
+          width:50px;
+          height:50px;
+          color:red;
+        }
+        .padder {
+          width: 10px;
+          height: 10px;
+          padding: 1px 2px 3px 4px;
+          margin: 1px 2px 3px 4px;
+          border: 1px solid red;
+        }
+        .pad {
+          padding: 10px;
+          margin: 10px;
+        }
+        .half-pad {
+          padding: 1px 2px;
+          margin: 1px 2px;
+          border-style: dashed solid double dotted;
+        }
+      </style>
+      <div class="dimensions"></div>
+      <div class="red">red</div>
+      <div class="padder"></div>
+      <div class="pad"></div>
+      <div class="half-pad"></div>
+    </div>
+  </body>
+</html>
