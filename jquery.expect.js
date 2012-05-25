@@ -431,22 +431,18 @@
     val = typeof val == 'string' ?  $.trim(val) : val;
     msg = typeof val == 'string' ? $.trim(msg) : msg;
 
-    var obj = this.obj;
-    var template = function (got) {
-      return msg || 'expected ' + i(obj) + ' to have its ' + prop 
-                  + ' style equal to ' + val + ( got ? ' but got ' + got : '');
-    };
+    var obj = this.obj
+      , template = function (got) {
+          return msg || 'expected ' + i(obj) + ' to have its ' + prop 
+                      + ' style equal to ' + val + ( got ? ' but got ' + got : '');
+        }
+      , got, passing;
 
-    
-    var got;
     switch (prop) {
       case 'backgroundColor':
       case 'background-color':
       case 'color':
-        this.assert(
-          (got = normalizeColor(this.obj.css(prop))) === normalizeColor(val)
-        , template(got)
-        , template());
+        passing = (got = normalizeColor(this.obj.css(prop))) === normalizeColor(val)
         break;
 
       case 'border-style':
@@ -455,11 +451,8 @@
       case 'margin':
       case 'padding':
         got = compareQuad(this.obj, prop, val);
-
-        this.assert(
-          got.passing
-        , template(got.got)
-        , template());
+        passing = got.passing;
+        got = got.got;
         break;
 
       case 'border-top':
@@ -467,11 +460,8 @@
       case 'border-left':
       case 'border-bottom':
         got = borderQuad(this.obj, prop, val);  
-
-        this.assert(
-            got.passing
-          , template(got.got)
-          , template());
+        passing = got.passing
+        got = got.got;
         break;
 
       case 'border':
@@ -487,19 +477,16 @@
         got = $.map(got, function (g) {
           return $.inArray(g, got) === -1 ? g : null;
         }).join(' ');
-
-        this.assert(
-            passing
-          , template(got)
-          , template());
         break;
 
       default:
-        this.assert(
-          (got = this.obj.css(prop)) === val
-        , template(got)
-        , template())
+        passing = (got = this.obj.css(prop)) === val;
     }
+
+    this.assert(
+          passing
+        , template(got)
+        , template());
 
     return this;
   };
