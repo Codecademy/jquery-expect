@@ -373,20 +373,42 @@
   }
 
   function compareQuad ($el, prop, val) {
+    var isColor = prop.match(/color/);
+    function props (dir) {
+      if (prop.match(/^border/)) {
+        var parts = prop.split(/-/);
+        return parts[0] + '-' + dir + '-' + parts[1];
+      } else {
+        return prop + '-' + dir;
+      }
+    }
+    
     val = val.split(/\s/);
 
     var passing = true
       , got = $.map(['top', 'right', 'bottom', 'left'], function (dir, i) {
-        var got;
         // 4 values or 2 values repeat or 1 value repeat.
-        if ((val[i] || val[i - 2] || val[0]) !== (got = $el.css(prop + '-' + dir))) passing = false;
+        var value = val[i] || val[i - 2] || val[0]
+          , got = $el.css(props(dir));
+
+
+        if (isColor) {
+          if (normalizeColor(value) !== normalizeColor(got)) passing = false;
+        } else {
+          if (value !== got) passing = false;
+        }
+
         return got;
       });
 
-    if (!passing) return got.join(' ');
+    return {passing: passing, got: got.join(' ')};
   }
 
   Assertion.prototype.css = function (prop, val, msg) {
+    prop = $.trim(prop);
+    val = typeof val == 'string' ?  $.trim(val) : val;
+    msg = typeof val == 'string' ? $.trim(msg) : msg;
+
     var obj = this.obj;
     var template = function (got) {
       return msg || 'expected ' + i(obj) + ' to have its ' + prop 
@@ -410,9 +432,11 @@
       case 'border-width':
       case 'margin':
       case 'padding':
+        got = compareQuad(this.obj, prop, val);
+
         this.assert(
-          !(got = compareQuad(this.obj, prop, val))
-        , template(got)
+          got.passing
+        , template(got.got)
         , template());
         break;
 
@@ -420,10 +444,18 @@
       case 'border-right':
       case 'border-left':
       case 'border-bottom':
+        var passing = false;
+        val = val.split(/\s/);
 
-        ['width', 'style', 'color'].forEach(function () {
+        ['width', 'style', 'color'].forEach(function (style, i) {
+          if (this.obj.css(prop + '-' + style ) === val[i]) passing = false;
 
         })
+        this.assert(
+          passing
+          ,''
+          ,'');
+        break;
       case 'border':
 
         break;
