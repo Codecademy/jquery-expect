@@ -424,8 +424,8 @@
 
     return {passing: passing, got: got.join(' ')};
   }
-  Assertion.prototype.css = function (prop, val, msg) {
 
+  Assertion.prototype.css = function (prop, val, msg) {
     prop = $.trim(prop);
     val = typeof val == 'string' ?  $.trim(val) : val;
     msg = typeof val == 'string' ? $.trim(msg) : msg;
@@ -465,7 +465,7 @@
       case 'border-right':
       case 'border-left':
       case 'border-bottom':
-        got = borderQuad(this.obj, prop, val);
+        got = borderQuad(this.obj, prop, val);  
         this.assert(
             got.passing
           , template(got.got)
