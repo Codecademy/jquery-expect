@@ -444,16 +444,20 @@
       case 'border-right':
       case 'border-left':
       case 'border-bottom':
-        var passing = false;
+        var passing = true;
         val = val.split(/\s/);
-
+        var that = this;
         ['width', 'style', 'color'].forEach(function (style, i) {
-          if (this.obj.css(prop + '-' + style ) === val[i]) passing = false;
-
-        })
+          if (style === 'color') {
+            
+            if (normalizeColor(got = that.obj.css(prop + '-' + style )) !== normalizeColor(val[i])) passing = false;
+          } else {
+            if ((got = that.obj.css(prop + '-' + style )) !== val[i]) passing = false;  
+          }
+        });
         this.assert(
           passing
-          ,''
+          ,got
           ,'');
         break;
       case 'border':

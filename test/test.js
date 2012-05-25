@@ -225,6 +225,10 @@ describe('$expect', function () {
     $expect('.half-pad').to.have.css('border-color', 'red');
     $expect('.half-pad').to.have.css('border-color', 'red red');
 
+    $expect('.half-pad').to.have.css('border-width', '2px 2px 2px 2px')
+
+    $expect('.half-pad').to.have.css('border-top', '2px dashed red')
+
     $expect('.pad').to.have.css('padding', '10px');
     $expect('.pad').to.have.css('margin', '10px');
 
