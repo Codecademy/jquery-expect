@@ -363,6 +363,8 @@
 
     // Given rgb or color name return the hex representation.
   function normalizeColor (color) {
+    if (!color) return '';
+
     if (color.match(/^#/)) {
       return color.toUpperCase();
     } else if (color.match(/^rgb/)) {
@@ -393,7 +395,7 @@
 
 
         if (isColor) {
-          if (normalizeColor(value) !== normalizeColor(got)) passing = false;
+          if (normalizeColor(value) !== (got = normalizeColor(got))) passing = false;
         } else {
           if (value !== got) passing = false;
         }
@@ -404,7 +406,26 @@
     return {passing: passing, got: got.join(' ')};
   }
 
+  function borderQuad ($el, prop, val) {
+    val = val.split(/\s/);
+
+    var passing = true
+      , got = $.map(['width', 'style', 'color'], function (style, i) {
+          var got = $el.css(prop + '-' + style );
+
+          if (style === 'color') {
+            if ((got = normalizeColor(got)) !== normalizeColor(val[i])) passing = false;
+          } else {
+            if (got !== val[i]) passing = false;  
+          }
+
+          return got;
+        });
+
+    return {passing: passing, got: got.join(' ')};
+  }
   Assertion.prototype.css = function (prop, val, msg) {
+
     prop = $.trim(prop);
     val = typeof val == 'string' ?  $.trim(val) : val;
     msg = typeof val == 'string' ? $.trim(msg) : msg;
@@ -444,21 +465,11 @@
       case 'border-right':
       case 'border-left':
       case 'border-bottom':
-        var passing = true;
-        val = val.split(/\s/);
-        var that = this;
-        ['width', 'style', 'color'].forEach(function (style, i) {
-          if (style === 'color') {
-            
-            if (normalizeColor(got = that.obj.css(prop + '-' + style )) !== normalizeColor(val[i])) passing = false;
-          } else {
-            if ((got = that.obj.css(prop + '-' + style )) !== val[i]) passing = false;  
-          }
-        });
+        got = borderQuad(this.obj, prop, val);
         this.assert(
-          passing
-          ,got
-          ,'');
+            got.passing
+          , template(got.got)
+          , template());
         break;
       case 'border':
 
