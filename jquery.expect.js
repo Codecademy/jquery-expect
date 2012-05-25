@@ -466,14 +466,33 @@
       case 'border-left':
       case 'border-bottom':
         got = borderQuad(this.obj, prop, val);  
+
         this.assert(
             got.passing
           , template(got.got)
           , template());
         break;
-      case 'border':
 
+      case 'border':
+        var passing = true
+          , obj = this.obj
+          , got = $.map(['top', 'right', 'left', 'bottom'], function (style, i) {
+              var ret = borderQuad(obj, prop + '-top', val);
+              if (!ret.passing) passing = false;
+              return ret.got;
+            });
+
+        // unique.
+        got = $.map(got, function (g) {
+          return $.inArray(g, got) === -1 ? g : null;
+        }).join(' ');
+
+        this.assert(
+            passing
+          , template(got)
+          , template());
         break;
+
       default:
         this.assert(
           (got = this.obj.css(prop)) === val
