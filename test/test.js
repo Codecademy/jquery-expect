@@ -89,11 +89,14 @@ describe('$expect', function () {
 
   it('should test for equal', function () {
     alias('equal', 'eql');
-    $expect('#four-list').to.be.eql('#four-list')
-    $expect('#four-list').to.be.eql($('#four-list'));
+    $expect('#four-list').to.eql('#four-list')
+    $expect('#four-list').to.eql($('#four-list'));
 
-    $expect('#four-list li').to.be.eql('li.item');
-    $expect('#four-list').not.to.be.eql('li');
+    $expect('#four-list li').to.eql('li.item');
+    $expect('#four-list').not.to.eql('li');
+
+    var $l = $('#four-list').add('li.first');
+    $expect('#four-list').not.to.eql($l);
 
     err(function () {
       $expect('#four-list').not.to.be.eql('#four-list');
@@ -295,5 +298,5 @@ describe('$expect', function () {
       $expect('div').to.be.a($('li.first'), 'foobar');
     }, 'foobar');
   });
-  
+
 });
