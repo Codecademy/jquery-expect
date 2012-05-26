@@ -273,6 +273,14 @@
     }
   };
 
+  function AssertionError (msg) {
+    Error.call(this);
+    if (Error.captureStackTrace) Error.captureStackTrace(this, arguments.callee);
+    this.message = msg;
+    this.name = 'AssertionError';
+  }
+  AssertionError.prototype = new Error;
+
   /**
    * Performs an assertion
    * 
@@ -287,7 +295,7 @@
       , ok = this.flags.not ? !truth : truth;
 
     if (!ok) {
-      throw new Error(msg);
+      throw new AssertionError(msg);
     }
 
     this.and = new Assertion(this.obj);
@@ -561,7 +569,7 @@
 
     var re = /[\.,-\/#!$%\^&\*;:{}=\-_`~()\s'"]/g
       , text = this.obj.text();
-console.log(text.replace(re, '').toLowerCase())
+
     this.assert(
         strict ? text === val
                : text.replace(re, '').toLowerCase() === val.replace(re, '').toLowerCase()
