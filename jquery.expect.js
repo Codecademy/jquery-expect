@@ -568,13 +568,22 @@
     }
 
     var re = /[\.,-\/#!$%\^&\*;:{}=\-_`~()\s'"]/g
-      , text = this.obj.text();
+      , text = this.obj.text()
+      , passing;
 
-    this.assert(
-        strict ? text === val
-               : text.replace(re, '').toLowerCase() === val.replace(re, '').toLowerCase()
-      , msg || 'expected ' + i(this.obj) + ' text to be equal to ' + val + ' but got ' + text
-      , msg || 'expected ' + i(this.obj) + ' text to not be equal to ' + val);
+    if ('number' == typeof val) {
+      this.assert(
+          text.length === val
+        , msg || 'expected ' + i(this.obj) + ' text to be of length ' + val + ' but got ' + text.length
+        , msg || 'expected ' + i(this.obj) + ' text to not be of length ' + val);
+    } else {
+      val = String(val);
+      this.assert(
+          strict ? text === val
+                       : text.replace(re, '').toLowerCase() === val.replace(re, '').toLowerCase()
+        , msg || 'expected ' + i(this.obj) + ' text to be equal to ' + val + ' but got ' + text
+        , msg || 'expected ' + i(this.obj) + ' text to not be equal to ' + val)
+    }
 
     return this;
   };

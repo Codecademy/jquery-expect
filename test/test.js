@@ -125,6 +125,13 @@ describe('$expect', function () {
     $expect('.link2').to.have.text('codecademy');
     $expect('.link').to.have.text('Google.', true);
 
+    $expect('.link').to.have.text(7);
+    $expect('.link').not.to.have.text(10);
+
+    err(function () {
+      $expect('.link2').to.have.text(10);      
+    }, 'expected .link2 text to be of length 10 but got 15');
+
     err(function () {
       $expect('.link').to.have.text('foo')
     }, 'expected .link text to be equal to foo but got Google.')
