@@ -627,7 +627,7 @@
          ], function (_, fn) {
           Assertion.prototype[fn] = function (val, msg) {
             var got = this.obj[fn](val);
-
+            
             this.assert(
                 !!got.length
               , msg || 'expected ' + i(this.obj) + ' to have ' + fn + ' ' + val

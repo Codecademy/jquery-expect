@@ -174,7 +174,11 @@ describe('$expect', function () {
 
   it('should test traversal', function () {
     $expect('.parent').to.have.children('.child');
+    $expect('.parent').not.to.have.children('.first');
+
     $expect('.parent').to.contain('.child');
+    $expect('.parent').to.contain($('.child'));
+    $expect('.parent').not.to.contain($('.first'));
 
     err(function () {
       $expect('.parent').to.have.children('blah');  
