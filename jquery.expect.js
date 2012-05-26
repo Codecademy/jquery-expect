@@ -611,6 +611,8 @@
           };
         });
 
+  Assertion.prototype.value = Assertion.prototype.val;
+
   /**
    * Asserts the existence of elements in different directions and traversal ways
    * of the tree.
@@ -627,7 +629,7 @@
          ], function (_, fn) {
           Assertion.prototype[fn] = function (val, msg) {
             var got = this.obj[fn](val);
-            
+
             this.assert(
                 !!got.length
               , msg || 'expected ' + i(this.obj) + ' to have ' + fn + ' ' + val
@@ -707,5 +709,13 @@
               this.on(evt, cb);
             };
           });
+
+  Assertion.prototype.class = function (className) {
+    this.assert(
+        this.obj.hasClass(className)
+      , 'expected ' + i(this.obj) + ' to have class' + className
+      , 'expected ' + i(this.obj) + ' not to have class' + className)
+    return this;
+  };
 
 })(this);
