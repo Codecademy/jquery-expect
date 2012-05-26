@@ -278,6 +278,22 @@ describe('$expect', function () {
     });
   });
 
+  it('should test for a', function () {
+    $expect('div').to.be.a('div');
+    $expect('.order-list').to.be.an('ol');
+    $expect('.order-list').to.be.a($('#foolist'));
 
-  it
+    err(function () {
+      $expect('div').to.be.a('li');
+    }, 'expected div to be a li');
+
+    err(function () {
+      $expect('div').to.be.a($('li.first'));
+    }, 'expected div to be a li.first');
+
+    err(function () {
+      $expect('div').to.be.a($('li.first'), 'foobar');
+    }, 'foobar');
+  });
+  
 });

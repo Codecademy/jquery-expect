@@ -36,8 +36,8 @@
    * Inspect
    */
 
-  function i ($obj) {
-    return $obj.selector;
+  function i (obj) {
+    return obj.selector || obj;
   }
 
   /**
@@ -643,8 +643,8 @@
   Assertion.prototype.a = function (obj, msg) {
     this.assert(
         this.obj.is(obj)
-      , msg || 'xx'
-      , msg || 'x');
+      , msg || 'expected ' + i(this.obj) + ' to be a ' + i(obj)
+      , msg || 'expected ' + i(this.obj) + ' not to be a ' + i(obj));
     return this;
   };
 
