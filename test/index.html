@@ -9,7 +9,13 @@
     <script src="/support/expect.js"></script>
     <script src="/jquery.expect.js"></script>
     <script src="/test/test.js"></script>
-    <script>window.onload = mocha.run;</script>
+    <script>
+    mocha.setup({
+      ui: 'bdd'
+    , ignoreLeaks: true
+    });
+    window.onload = mocha.run;
+    </script>
   </head>
   <body>
     <div id="mocha"></div>

@@ -658,4 +658,45 @@
     return new Assertion(this.obj.end());
   };
 
+  Assertion.asyncWait = function (evt, dfd) {};
+  Assertion.asyncDone = function (evt, dfd) {};
+
+  /**
+   * Attaches a *once* callback to an event.
+   *
+   * @api public
+   * @param {String} evt
+   * @param {Function} cb
+   */
+
+  Assertion.prototype.on = function (evt, cb) {
+    var obj = this.obj
+      , dfd = $.Deferred()
+      , callback = function () {
+          obj.off(evt, callback);
+          Assertion.asyncDone(evt, dfd);
+          ret = cb.apply(this, arguments);
+          return ret;
+        };
+
+    Assertion.asyncWait(evt, dfd);
+    this.obj.on(evt, callback);
+  };
+
+  /**
+   * Shorthand methods for event binding. Just like jQuery!
+   *
+   * @api public
+   */
+  $.each([ 'blur', 'change', 'click', 'dblclick', 'error', 'focus'
+         , 'focusin', 'focusout', 'hover', 'keydown', 'keypress'
+         , 'keyup', 'load', 'mousedown', 'mouseenter', 'mouseleave'
+         , 'mousemove', 'mouseout', 'mouseover', 'mouseup', 'resize'
+         , 'select', 'submit', 'scroll'
+         ], function (_, evt) {
+            Assertion.prototype[evt] = function (cb) {
+              this.on(evt, cb);
+            };
+          });
+
 })(this);

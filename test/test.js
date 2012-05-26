@@ -252,4 +252,25 @@ describe('$expect', function () {
 
   });
 
+  it('should test event tests', function (n) {
+    var s = 0;
+    $(window).on('scroll.once', function () {
+      $(window).off('scroll.once');
+      $('body').append('<div class="after-scroll" />');
+      $(window).scrollTop(s);
+    });
+
+    $expect(window).to.scroll(function () {
+      $expect('body').to.contain('.after-scroll');
+      n();
+    });
+
+    setTimeout(function () {
+      s = $(window).scrollTop();
+      $(window).scrollTop(500);
+    });
+  });
+
+
+  it
 });
