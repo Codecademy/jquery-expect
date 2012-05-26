@@ -674,7 +674,7 @@
       , dfd = $.Deferred()
       , callback = function () {
           obj.off(evt, callback);
-          Assertion.asyncDone(evt, dfd);
+          Assertion.asyncDone(evt, dfd.resolve());
           ret = cb.apply(this, arguments);
           return ret;
         };

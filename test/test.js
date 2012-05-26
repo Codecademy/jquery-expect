@@ -260,9 +260,16 @@ describe('$expect', function () {
       $(window).scrollTop(s);
     });
 
+    $expect.Assertion.asyncWait = function (evt, dfd) {
+      dfd.then(n);
+    };
+
+    $expect.Assertion.asyncDone = function (evt, dfd) {
+      expect(dfd.isResolved()).to.be.ok();
+    };
+
     $expect(window).to.scroll(function () {
       $expect('body').to.contain('.after-scroll');
-      n();
     });
 
     setTimeout(function () {
