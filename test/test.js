@@ -277,7 +277,7 @@ describe('$expect', function () {
 
     err(function () {
       $expect('.padder').to.have.css('border', '1px solid yellow');
-    }, 'expected .padder to have its border style equal to 1px solid yellow')
+    },  'expected .padder to have its border style equal to 1px solid yellow but got 1px solid #FF0000')
     
 
     $expect('.pad').to.have.css('padding', '10px');
@@ -295,6 +295,7 @@ describe('$expect', function () {
       $expect('.paragraphs2 p').to.have.css('display', 'inline');
     }, 'expected .paragraphs2 p to have its display style equal to inline but got block')
     
+    $expect('.dashed').to.have.css('border', '1px dashed #ccc');
   });
 
   it('should test event tests', function (n) {

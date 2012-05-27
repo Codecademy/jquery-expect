@@ -422,6 +422,10 @@
     if (!color) return '';
 
     if (color.match(/^#/)) {
+      if (color.length === 4) {
+        function r (x) {return x.toUpperCase() + x.toUpperCase()}
+        return '#' + r(color.charAt(1)) + r(color.charAt(2)) + r(color.charAt(3));
+      }
       return color.toUpperCase();
     } else if (color.match(/^rgb/)) {
       return rgb2hex(color).toUpperCase();
@@ -544,9 +548,10 @@
               });
 
           // Array unique.
-          got = $.map(got, function (g) {
-            return $.inArray(g, got) === -1 ? g : null;
+          got = $.map(got, function (g, i) {
+            return $.inArray(g, got) == i ? g : null;
           }).join(' ');
+
           break;
 
         default:
