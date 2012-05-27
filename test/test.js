@@ -130,6 +130,12 @@ describe('$expect', function () {
   it('should test text and contain', function () {
     $expect('.link').to.contain('google');
     $expect('.link2').to.contain('codecademy');
+    $expect('.link').to.contain('Goog', true);
+
+    err(function () {
+      $expect('.link').to.contain('goog', true, 'foobar');
+    }, 'foobar');
+
     $expect('.link').to.have.text('Google.');
 
     $expect('.link').to.have.text(7);
