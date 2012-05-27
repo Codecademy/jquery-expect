@@ -121,9 +121,9 @@ describe('$expect', function () {
   });
 
   it('should test text', function () {
-    $expect('.link').to.have.text('google');
-    $expect('.link2').to.have.text('codecademy');
-    $expect('.link').to.have.text('Google.', true);
+    $expect('.link').to.contain('google');
+    $expect('.link2').to.contain('codecademy');
+    $expect('.link').to.have.text('Google.');
 
     $expect('.link').to.have.text(7);
     $expect('.link').not.to.have.text(10);
@@ -137,7 +137,7 @@ describe('$expect', function () {
     }, 'expected .link text to be equal to foo but got Google.')
 
     err(function () {
-      $expect('.link').to.not.have.text('google', 'blah')
+      $expect('.link').to.not.contain('google', 'blah')
     }, 'blah');
 
     err(function () {
@@ -176,9 +176,10 @@ describe('$expect', function () {
     $expect('.parent').to.have.children('.child');
     $expect('.parent').not.to.have.children('.first');
 
-    $expect('.parent').to.contain('.child');
-    $expect('.parent').to.contain($('.child'));
-    $expect('.parent').not.to.contain($('.first'));
+    $expect('.parent').to.have('.child');
+    $expect('.parent').to.have($('.child'));
+    $expect('.parent').not.to.have($('.first'));
+    $expect('body').to.have('.parent');
 
     err(function () {
       $expect('.parent').to.have.children('blah');  
@@ -333,6 +334,12 @@ describe('$expect', function () {
     err(function () {
       $expect('li.first').to.be.disabled()  
     }, 'expected li.first to be disabled');
+
+    $expect('.hidden').to.be.empty();
+
+    err(function () {
+      $expect('#foolist').to.be.empty('foobar');
+    }, 'foobar');
   });
 
 });

@@ -562,14 +562,7 @@
    */
 
   Assertion.prototype.text = function (val, strict, msg) {
-    if ('boolean' != typeof strict) {
-      msg = strict;
-      strict = false;
-    }
-
-    var re = /[\.,-\/#!$%\^&\*;:{}=\-_`~()\s'"]/g
-      , text = this.obj.text()
-      , passing;
+    var text = this.obj.text();
 
     if ('number' == typeof val) {
       this.assert(
@@ -579,8 +572,7 @@
     } else {
       val = String(val);
       this.assert(
-          strict ? text === val
-                       : text.replace(re, '').toLowerCase() === val.replace(re, '').toLowerCase()
+          text === val
         , msg || 'expected ' + i(this.obj) + ' text to be equal to ' + val + ' but got ' + text
         , msg || 'expected ' + i(this.obj) + ' text to not be equal to ' + val)
     }
@@ -588,6 +580,28 @@
     return this;
   };
 
+  Assertion.prototype.contain = function (text, strict, msg) {
+    if ('boolean' != typeof strict) {
+      msg = strict;
+      strict = false;
+    }
+
+    var re = /[\.,-\/#!$%\^&\*;:{}=\-_`~()\s'"]/g
+      , passing;
+
+    if (strict) {
+      passing = this.obj.is(':contains(\'' + text + '\')');
+    } else {
+      passing = this.obj.text().replace(re, '').toLowerCase().indexOf(text.replace(re, '').toLowerCase()) > -1;
+    }
+
+    this.assert(
+        passing
+      , msg || 'expected ' + i(this.obj) + ' to contain "' + text + '"'
+      , msg || 'expected ' + i(this.obj) + ' not to contain "' + text + '"');
+
+    return this;
+  };
 
   /**
    * Asserts the value of the following jquery accessor functions.
@@ -642,7 +656,7 @@
          });
 
   // alias
-  Assertion.prototype.contain = Assertion.prototype.find;
+  Assertion.prototype.have = Assertion.prototype.find;
 
   /**
    * Asserts the element(s) using the jquery is method.
@@ -719,7 +733,7 @@
   };
 
   $.each([ 'visible', 'hidden', 'selected', 
-         , 'checked', 'disabled'], function (_, attr) {
+         , 'checked', 'disabled', 'empty'], function (_, attr) {
           Assertion.prototype[attr] = function (msg) {
             this.assert(
                 this.obj.is(':' + attr)
