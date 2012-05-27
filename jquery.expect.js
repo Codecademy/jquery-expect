@@ -624,22 +624,64 @@
    * @api public
    */
 
-  $.each([ 'html', 'val'
-         , 'width', 'innerWidth', 'outerWidth'
+  $.each([ 'width', 'innerWidth', 'outerWidth'
          , 'height', 'innerHeight', 'outerHeight'
          , 'scrollLeft', 'scrollTop'
          ], function (_, fn) {
           Assertion.prototype[fn] = function (val, msg) {
-            var got;
-            this.assert(
-                (got = this.obj[fn]()) === val
-              , msg || 'expected ' + i(this.obj) + ' to have a ' + fn + ' of ' + val + ' but got ' + got
-              , msg || 'expected ' + i(this.obj) + ' not to have a ' + fn + ' of ' + val)
+            var ops = {
+              '>': function (v1, v2) {return v1 > v2}
+            , '>=': function (v1, v2) {return v1 >= v2}
+            , '<': function (v1, v2) {return v1 < v2}
+            , '<=': function (v1, v2) {return v1 <= v2}
+            };
+
+            if ('string' === typeof val && (ops[$.trim(val).slice(0, 2)] || ops[$.trim(val).charAt(0)])) {
+              val = $.trim(val);
+
+              var op, opName;
+              if (op = ops[val.slice(0, 2)]) {
+                opName = val.slice(0, 2);
+                val = parseFloat(val.slice(2));
+              } else if (op = ops[val.charAt(0)] ) {
+                opName = val.charAt(0);
+                val = parseFloat(val.slice(1));  
+              }
+              
+              var v = this.obj[fn]();
+              this.assert(
+                  op(v, val)
+                , msg || 'expected ' + i(this.obj) + ' to have a ' + fn + '  ' + opName + ' ' + val
+                , msg || 'expected ' + i(this.obj) + ' not to have a ' + fn + '  ' + opName + ' ' + val)
+            } else {
+              var got;
+              this.assert(
+                  (got = this.obj[fn]()) === val
+                , msg || 'expected ' + i(this.obj) + ' to have a ' + fn + ' of ' + val + ' but got ' + got
+                , msg || 'expected ' + i(this.obj) + ' not to have a ' + fn + ' of ' + val)
+            }
+
             return this;
           };
         });
 
-  Assertion.prototype.value = Assertion.prototype.val;
+  Assertion.prototype.value = 
+  Assertion.prototype.val = function (val, msg) {
+    var got;
+    this.assert(
+        (got = this.obj.val()) === val
+      , msg || 'expected ' + i(this.obj) + ' to have value ' + val + ' but got ' + got
+      , msg || 'expected ' + i(this.obj) + ' not to have value ' + val)
+  };
+
+
+  Assertion.prototype.html = function (html, msg) {
+    var got;
+    this.assert(
+        (got = this.obj.html()) === html
+      , msg || 'expected ' + i(this.obj) + ' to have HTML ' + html + ' but got ' + got
+      , msg || 'expected ' + i(this.obj) + ' not to have HTML ' + html)
+  };
 
   /**
    * Asserts the existence of elements in different directions and traversal ways

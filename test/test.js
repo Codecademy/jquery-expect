@@ -171,13 +171,18 @@ describe('$expect', function () {
     $expect('.dimensions').to.have.height(50);
     $expect('.dimensions').to.have.outerHeight(64);
     $expect('.dimensions').to.have.innerHeight(60);
+
+    $expect('.dimensions').to.have.width('> 49')
+                      .and.to.have.width('>= 50')
+                      .and.to.have.width('< 51')
+                      .and.to.have.width('<= 50')
   });
   
   it('should test for html, val', function () {
     $expect('.html').to.have.html('<a>XX</a><p>YY</p>');
     err(function () {
       $expect('.html').not.to.have.html('<a>XX</a><p>YY</p>');
-    }, 'expected .html not to have a html of <a>XX</a><p>YY</p>');
+    }, 'expected .html not to have HTML <a>XX</a><p>YY</p>');
     err(function () {
       $expect('.html').not.to.have.html('<a>XX</a><p>YY</p>', 'blah');
     }, 'blah');
