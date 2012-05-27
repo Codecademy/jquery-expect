@@ -310,4 +310,29 @@ describe('$expect', function () {
     }, 'foobar');
   });
 
+  it('should test for class', function () {
+    $expect('#foolist').to.have.class('order-list');
+    $expect('li').to.have.class('first');
+
+    err(function () {
+      $expect('#foolist').to.have.class('foo');
+    }, 'expected #foolist to have class foo');
+
+    err(function () {
+      $expect('#foolist').to.have.class('foo', 'foobar');
+    }, 'foobar');
+
+  });
+
+  it('should test for shorthand attributes (hidden, visible etc.)', function () {
+    $expect('.hidden').to.be.hidden();
+    $expect('#foolist').to.be.visible();
+    $expect('.checked').to.be.checked();
+    $expect('.selected').to.be.selected();
+    $expect('.disabled').to.be.disabled();
+    err(function () {
+      $expect('li.first').to.be.disabled()  
+    }, 'expected li.first to be disabled');
+  });
+
 });

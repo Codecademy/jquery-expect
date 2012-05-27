@@ -710,12 +710,23 @@
             };
           });
 
-  Assertion.prototype.class = function (className) {
+  Assertion.prototype.class = function (className, msg) {
     this.assert(
         this.obj.hasClass(className)
-      , 'expected ' + i(this.obj) + ' to have class' + className
-      , 'expected ' + i(this.obj) + ' not to have class' + className)
+      , msg || 'expected ' + i(this.obj) + ' to have class ' + className
+      , msg || 'expected ' + i(this.obj) + ' not to have class ' + className)
     return this;
   };
+
+  $.each([ 'visible', 'hidden', 'selected', 
+         , 'checked', 'disabled'], function (_, attr) {
+          Assertion.prototype[attr] = function (msg) {
+            this.assert(
+                this.obj.is(':' + attr)
+              , msg || 'expected ' + i(this.obj) + ' to be ' + attr
+              , msg || 'expected ' + i(this.obj) + ' not to be ' + attr);
+            return this;
+          };
+        });
 
 })(this);
