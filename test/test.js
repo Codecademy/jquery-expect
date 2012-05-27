@@ -296,6 +296,10 @@ describe('$expect', function () {
     }, 'expected .paragraphs2 p to have its display style equal to inline but got block')
     
     $expect('.dashed').to.have.css('border', '1px dashed #ccc');
+
+    err(function () {
+      $expect('.dashed').to.exist().and.be.empty().and.have.css('border', '1px dashed #fff', 'foooo');
+    }, 'foooo');
   });
 
   it('should test event tests', function (n) {
