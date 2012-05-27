@@ -127,7 +127,7 @@ describe('$expect', function () {
     }, 'expected .link to have an attribute style');
   });
 
-  it('should test text', function () {
+  it('should test text and contain', function () {
     $expect('.link').to.contain('google');
     $expect('.link2').to.contain('codecademy');
     $expect('.link').to.have.text('Google.');
@@ -148,8 +148,13 @@ describe('$expect', function () {
     }, 'blah');
 
     err(function () {
-      $expect('.link').to.have.text('google', true, 'blah2')
+      $expect('.link').to.have.text('google', 'blah2')
     }, 'blah2');
+
+    $expect('.link').to.have.text(/goog/i);
+    err(function () {
+      $expect('.link').to.have.text(/code/i);
+    }, 'expected .link text to match /code/i');
   });
 
   it('should test dimensions (width, height)', function () {

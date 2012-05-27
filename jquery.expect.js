@@ -570,7 +570,7 @@
    * @api public
    */
 
-  Assertion.prototype.text = function (val, strict, msg) {
+  Assertion.prototype.text = function (val, msg) {
     var text = this.obj.text();
 
     if ('number' == typeof val) {
@@ -578,6 +578,11 @@
           text.length === val
         , msg || 'expected ' + i(this.obj) + ' text to be of length ' + val + ' but got ' + text.length
         , msg || 'expected ' + i(this.obj) + ' text to not be of length ' + val);
+    } else if (val instanceof RegExp) {
+      this.assert(
+          val.test(text)
+        , msg || 'expected ' + i(this.obj) + ' text to match ' + String(val)
+        , msg || 'expected ' + i(this.obj) + ' text not to match ' + String(val))
     } else {
       val = String(val);
       this.assert(
