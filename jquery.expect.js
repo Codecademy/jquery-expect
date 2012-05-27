@@ -216,12 +216,11 @@
   var flags = {
       not: ['to', 'be', 'have', 'include', 'only']
     , to: ['be', 'have', 'include', 'only', 'not']
+    , be: []
     , is: []
     , are: []
-    , only: ['have']
-    , have: ['own']
-    , has: ['own']
-    , be: ['an']
+    , have: []
+    , has: []
   };
 
   /**
@@ -248,27 +247,28 @@
 
     if ($flags) {
       for (var i = 0, l = $flags.length; i < l; i++) {
-        // avoid recursion
         if (this.flags[$flags[i]]) continue;
+        (function () {
+          // avoid recursion
+          var name = $flags[i]
+            , assertion = new Assertion(this.obj, name, this)
 
-        var name = $flags[i]
-          , assertion = new Assertion(this.obj, name, this)
-  
-        if ('function' == typeof Assertion.prototype[name]) {
-          // clone the function, make sure we dont touch the prot reference
-          var old = this[name];
-          this[name] = function () {
-            return old.apply(self, arguments);
-          }
-
-          for (var fn in Assertion.prototype) {
-            if (Assertion.prototype.hasOwnProperty(fn) && fn != name) {
-              this[name][fn] = $.proxy(assertion[fn], assertion);
+          if ('function' == typeof Assertion.prototype[name]) {
+            // clone the function, make sure we dont touch the prot reference
+            var old = this[name];
+            this[name] = function () {
+              return old.apply(self, arguments);
             }
+
+            for (var fn in Assertion.prototype) {
+              if (Assertion.prototype.hasOwnProperty(fn) && fn != name) {
+                this[name][fn] = $.proxy(assertion[fn], assertion);
+              }
+            }
+          } else {
+            this[name] = assertion;
           }
-        } else {
-          this[name] = assertion;
-        }
+        }).call(this);
       }
     }
   };
@@ -678,8 +678,8 @@
   Assertion.prototype.a = function (obj, msg) {
     this.assert(
         this.obj.is(obj)
-      , msg || 'expected ' + i(this.obj) + ' to be a ' + i(obj)
-      , msg || 'expected ' + i(this.obj) + ' not to be a ' + i(obj));
+      , msg || 'expected ' + i(this.obj) + ' to be ' + i(obj)
+      , msg || 'expected ' + i(this.obj) + ' not to be ' + i(obj));
     return this;
   };
 

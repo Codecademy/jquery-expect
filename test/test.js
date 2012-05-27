@@ -307,15 +307,22 @@ describe('$expect', function () {
 
     err(function () {
       $expect('div').to.be.a('li');
-    }, 'expected div to be a li');
+    }, 'expected div to be li');
 
     err(function () {
       $expect('div').to.be.a($('li.first'));
-    }, 'expected div to be a li.first');
+    }, 'expected div to be li.first');
 
     err(function () {
       $expect('div').to.be.a($('li.first'), 'foobar');
     }, 'foobar');
+
+    $expect('li.first').to.be(':odd');
+
+    err(function () {
+      $expect('li.first').to.be(':even');
+    }, 'expected li.first to be :even')
+    
   });
 
   it('should test for class', function () {
