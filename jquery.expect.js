@@ -3,6 +3,7 @@
 
   global.$expect = $expect;
   $expect.Assertion = Assertion;
+  $expect.AssertionError = AssertionError;
 
   function $expect (obj) {
     return new Assertion(obj);
@@ -504,57 +505,63 @@
           return msg || 'expected ' + i(obj) + ' to have its ' + prop 
                       + ' style equal to ' + val + ( got ? ' but got ' + got : '');
         }
+      , that = this
       , got, passing;
 
-    switch (prop) {
-      case 'backgroundColor':
-      case 'background-color':
-      case 'color':
-        passing = (got = normalizeColor(this.obj.css(prop))) === normalizeColor(val)
-        break;
+    function check (obj) {
+      switch (prop) {
+        case 'backgroundColor':
+        case 'background-color':
+        case 'color':
+          passing = (got = normalizeColor(obj.css(prop))) === normalizeColor(val)
+          break;
 
-      case 'border-style':
-      case 'border-color':
-      case 'border-width':
-      case 'margin':
-      case 'padding':
-        got = compareQuad(this.obj, prop, val);
-        passing = got.passing;
-        got = got.got;
-        break;
+        case 'border-style':
+        case 'border-color':
+        case 'border-width':
+        case 'margin':
+        case 'padding':
+          got = compareQuad(obj, prop, val);
+          passing = got.passing;
+          got = got.got;
+          break;
 
-      case 'border-top':
-      case 'border-right':
-      case 'border-left':
-      case 'border-bottom':
-        got = borderQuad(this.obj, prop, val);  
-        passing = got.passing
-        got = got.got;
-        break;
+        case 'border-top':
+        case 'border-right':
+        case 'border-left':
+        case 'border-bottom':
+          got = borderQuad(obj, prop, val);  
+          passing = got.passing
+          got = got.got;
+          break;
 
-      case 'border':
-        var passing = true
-          , obj = this.obj
-          , got = $.map(['top', 'right', 'left', 'bottom'], function (style, i) {
-              var ret = borderQuad(obj, prop + '-top', val);
-              if (!ret.passing) passing = false;
-              return ret.got;
-            });
+        case 'border':
+          var passing = true
+            , got = $.map(['top', 'right', 'left', 'bottom'], function (style, i) {
+                var ret = borderQuad(obj, prop + '-top', val);
+                if (!ret.passing) passing = false;
+                return ret.got;
+              });
 
-        // Array unique.
-        got = $.map(got, function (g) {
-          return $.inArray(g, got) === -1 ? g : null;
-        }).join(' ');
-        break;
+          // Array unique.
+          got = $.map(got, function (g) {
+            return $.inArray(g, got) === -1 ? g : null;
+          }).join(' ');
+          break;
 
-      default:
-        passing = (got = this.obj.css(prop)) === val;
+        default:
+          passing = (got = obj.css(prop)) === val;
+      }
+
+      that.assert(
+            passing
+          , template(got)
+          , template());
     }
-
-    this.assert(
-          passing
-        , template(got)
-        , template());
+   
+    this.obj.each(function (_, el) {
+      check($(el))
+    });
 
     return this;
   };
@@ -583,6 +590,11 @@
           val.test(text)
         , msg || 'expected ' + i(this.obj) + ' text to match ' + String(val)
         , msg || 'expected ' + i(this.obj) + ' text not to match ' + String(val))
+    } else if (null == val) {
+      this.assert(
+          !!text.length
+        , msg || 'expected ' + i(this.obj) + ' to have text'
+        , msg || 'expected ' + i(this.obj) + ' to not have text')
     } else {
       val = String(val);
       this.assert(

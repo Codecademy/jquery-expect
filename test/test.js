@@ -288,6 +288,13 @@ describe('$expect', function () {
     }, 'expected .padder to have its padding style equal to 1px 2px 3px 5px but got 1px 2px 3px 4px');
   
 
+    $expect('.paragraphs1 p').to.have.css('display', 'block');
+
+    err(function () {
+      // last one is block;
+      $expect('.paragraphs2 p').to.have.css('display', 'inline');
+    }, 'expected .paragraphs2 p to have its display style equal to inline but got block')
+    
   });
 
   it('should test event tests', function (n) {

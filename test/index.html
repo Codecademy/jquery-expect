@@ -74,6 +74,15 @@
         .hidden {
           display: none;
         }
+        .paragraphs1 p{
+          display: block;
+        }
+        .paragraphs2 p{
+          display: inline;
+        }
+        .paragraphs2 p:last-child{
+          display: block;
+        }
       </style>
       <div class="dimensions"></div>
       <div class="red">red</div>
@@ -81,6 +90,16 @@
       <div class="pad"></div>
       <div class="half-pad"></div>
       <div class="hidden"></div>
+      <div class="paragraphs1">
+        <p></p>
+        <p></p>
+        <p></p>
+      </div>
+      <div class="paragraphs2">
+        <p></p>
+        <p></p>
+        <p></p>
+      </div>
     </div>
     <select><option class="selected">1</option></select>
     <input type="checkbox" class="checked" checked/>
