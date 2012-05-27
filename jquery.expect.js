@@ -1,5 +1,5 @@
 
-(function (global) {
+(function (global, undefined) {
 
   global.$expect = $expect;
   $expect.Assertion = Assertion;
@@ -395,11 +395,20 @@
    */
 
   Assertion.prototype.attr = function (prop, val, msg) {
-    var got;
-    this.assert(
-        (got = this.obj.attr(prop)) === val
-      , msg || 'expected ' + i(this.obj) + ' to have an attribute ' + prop + ' equals to ' + val
-      , msg || 'expected ' + i(this.obj) + ' to not have an attribute ' + prop + ' equals to ' + val);
+    var got = this.obj.attr(prop);
+
+    if (undefined === val) {
+      this.assert(
+          undefined !== got
+        , msg || 'expected ' + i(this.obj) + ' to have an attribute ' + prop
+        , msg || 'expected ' + i(this.obj) + ' not to have attribute ' + prop)
+    } else {
+      this.assert(
+          got === val
+        , msg || 'expected ' + i(this.obj) + ' to have an attribute ' + prop + ' equals to ' + val
+        , msg || 'expected ' + i(this.obj) + ' to not have an attribute ' + prop + ' equals to ' + val);  
+    }
+    
     return this;
   };
 
@@ -664,6 +673,7 @@
    * @api public
    */
 
+  Assertion.prototype.be =
   Assertion.prototype.an =
   Assertion.prototype.a = function (obj, msg) {
     this.assert(

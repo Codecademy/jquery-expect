@@ -118,6 +118,13 @@ describe('$expect', function () {
     err(function () {
       $expect('.link').not.to.have.attr('href', 'http://google.com', 'blah');
     }, 'blah');
+
+    $expect('.link').to.have.attr('id');
+    $expect('.link').to.not.have.attr('style');
+
+    err(function () {
+      $expect('.link').to.have.attr('style');
+    }, 'expected .link to have an attribute style');
   });
 
   it('should test text', function () {
