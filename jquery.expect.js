@@ -786,8 +786,8 @@
           return ret;
         };
 
-    Assertion.asyncWait(evt, dfd);
     this.obj.on(evt, callback);
+    Assertion.asyncWait(evt, dfd);
   };
 
   /**
