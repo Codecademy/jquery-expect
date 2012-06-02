@@ -773,8 +773,16 @@
       , dfd = $.Deferred()
       , callback = function () {
           obj.off(evt, callback);
-          Assertion.asyncDone(evt, dfd.resolve());
-          ret = cb.apply(this, arguments);
+          var ret = null;
+
+          try {
+            ret = cb.apply(this, arguments);
+            dfd.resolveWith(obj, [null, ret]);
+          } catch (e) {
+            dfd.rejectWith(obj, [e, ret]);
+          }
+
+          Assertion.asyncDone(evt, dfd);
           return ret;
         };
 

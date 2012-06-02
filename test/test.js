@@ -311,15 +311,20 @@ describe('$expect', function () {
     });
 
     $expect.Assertion.asyncWait = function (evt, dfd) {
-      dfd.then(n);
+      dfd.then(n, n);
     };
 
     $expect.Assertion.asyncDone = function (evt, dfd) {
-      expect(dfd.isResolved()).to.be.ok();
+      expect(dfd.state()).to.be('resolved');
     };
 
     $expect(window).to.scroll(function () {
-      $expect('body').to.contain('.after-scroll');
+      $expect('body').to.have('.after-scroll');
+
+      err(function () {
+        // Old api. contain used to alias find.
+        $expect('body').to.contain('.after-scroll');
+      }, 'expected body to contain ".after-scroll"');
     });
 
     setTimeout(function () {
