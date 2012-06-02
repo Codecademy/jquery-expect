@@ -355,7 +355,12 @@ describe('$expect', function () {
 
   it('should test for class', function () {
     $expect('#foolist').to.have.class('order-list');
-    $expect('li').to.have.class('first');
+    
+    $expect('#four-list li').to.have.class('item');
+
+    err(function () {
+      $expect('li').to.have.class('first');
+    }, 'expected li to have class first');
 
     err(function () {
       $expect('#foolist').to.have.class('foo');

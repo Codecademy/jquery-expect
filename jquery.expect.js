@@ -799,10 +799,14 @@
           });
 
   Assertion.prototype.class = function (className, msg) {
-    this.assert(
-        this.obj.hasClass(className)
-      , msg || 'expected ' + i(this.obj) + ' to have class ' + className
-      , msg || 'expected ' + i(this.obj) + ' not to have class ' + className)
+    var that = this;
+    this.obj.each(function (_, el) {
+      that.assert(
+          $(el).hasClass(className)
+        , msg || 'expected ' + i(that.obj) + ' to have class ' + className
+        , msg || 'expected ' + i(that.obj) + ' not to have class ' + className)
+    });
+
     return this;
   };
 
