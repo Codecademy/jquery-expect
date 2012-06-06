@@ -286,19 +286,19 @@
    * Performs an assertion
    * 
    * @param {Boolean} truth
-   * @param {String}{Function} msg
+   * @param {String|Function} msg
    * @param {String} error
    * @api private
    */
 
   Assertion.prototype.assert = function (truth, msg, error) {
+    var ok = this.flags.not ? !truth : truth;
+
+    if ($.isFunction(msg)) {
+      error = msg = msg.call(this, ok);
+    }
 	
-	if ($.isFunction(msg)) {
-		msg = msg()
-	}
-	
-    var msg = this.flags.not ? error : msg
-      , ok = this.flags.not ? !truth : truth;
+    msg = this.flags.not ? error : msg;
 
     if (!ok) {
       throw new AssertionError(msg);
