@@ -105,6 +105,10 @@ describe('$expect', function () {
     err(function () {
       $expect('#four-list').not.to.be.eql('#four-list', 'blah');
     }, 'blah');
+
+	err(function() {
+	  $expect($('#four-list li').first()).to.be.eql($('#four-list li').last(), 'unequal equal')
+	}, 'unequal equal');
   });
 
   it('should test for attr', function () {

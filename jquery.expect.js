@@ -382,10 +382,18 @@
   Assertion.prototype.equal = function ($el, msg) {
     $el = $el instanceof jQuery ? $el : $($el);
     
-    var eq = $el.length == this.obj.length
-        &&  !!this.obj.map(function (i, el) {
-          return $.inArray(el, $el);
-        }).length;
+  	// Returns true if every element in a appears exactly once in b.
+    var injSurj = function(a,b) {
+      if (a.length !== b.length) return false;
+
+      return a.map(function(i, el) {
+        return $.inArray(el, b) > -1 ? true : null;
+      }).length === a.length;
+    };
+	
+    // Arrays are equal if every element in this.obj 
+    // appears in $el, and vice-versa.
+    var eq = injSurj(this.obj, $el) && injSurj($el, this.obj);
 
     this.assert(
         eq
