@@ -377,31 +377,18 @@
   Assertion.prototype.equal = function ($el, msg) {
     $el = $el instanceof jQuery ? $el : $($el);
     
-	//returns the number of times that element is in array;
-	var count = function(el,array) {
-		var count = 0;
-		for (var i = 0, length = array.length; i<length; i++) {
-			if ( array[i] === el ) count++;
-		}
-		return count;
-	}
+  	// Returns true if every element in a appears exactly once in b.
+    var injSurj = function(a,b) {
+      if (a.length !== b.length) return false;
+
+      return a.map(function(i, el) {
+        return $.inArray(el, b) > -1 ? true : null;
+      }).length;
+    };
 	
-	//returns true if every element in a appears exactly once in b
-	//(short for injection and surjection)
-	var injSurj = function(a,b) {
-		if (a.length > b.length) return false;
-		
-		var exactlyOnceCount = 0;
-		$.each(a,function(i, el) {
-			if ( count(el,b) === 1 ) exactlyOnceCount++;
-		});		
-		
-		return exactlyOnceCount === a.length;
-	}
-	
-	//so the arrays are equal if every element in this.obj
-	//appears exactly once in $el, and vice-versa
-	var eq = injSurj(this.obj,$el) && injSurj($el,this.obj);
+    // Arrays are equal if every element in this.obj 
+    // appears in $el, and vice-versa.
+    var eq = injSurj(this.obj, $el) && injSurj($el, this.obj);
 
     this.assert(
         eq
