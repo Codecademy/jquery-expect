@@ -383,7 +383,7 @@
 
       return a.map(function(i, el) {
         return $.inArray(el, b) > -1 ? true : null;
-      }).length;
+      }).length === a.length;
     };
 	
     // Arrays are equal if every element in this.obj 
