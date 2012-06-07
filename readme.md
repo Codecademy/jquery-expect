@@ -25,11 +25,13 @@ the default message.
 
 The passed in function could act as a cleanup function before throwing the assertion error.  
 It would be passed a boolean stating whether the assertion would throw or not.
+
 ```javascript
 $expect('div').to.exist(function (willThrow) {
   // Some cleanup code.
   return 'Please add a div to the page.'
 });
+```
 
 ### items / elements / length
 Asserts the `.length` property.
