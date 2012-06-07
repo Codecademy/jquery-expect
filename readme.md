@@ -34,6 +34,23 @@ Asserts that the `.length` property is less than a given number.
 $expect('li').to.be.lessThan(5);
 ```
 
+### be / a / an
+Asserts that each element in a jQuery collection matches the passed in selector.  
+
+```javascript
+$expect('div').to.be('.widget');
+$expect('input').to.be('[type=text]');
+$expect('.win').to.be.a('div');
+$expect('.list').to.be.an('ol');
+```
+
+Internally calls `$().is` so it can be passed either a selector, a function, a jQuery object, or an element.  
+For more info check out the [jQuery docs](http://api.jquery.com/is/).
+
+```javascript
+$expect('h1').to.be($headers);
+```
+
 ### eql / equal
 Asserts that one jQuery collection has the exact same elements as another.  
 Can accept a jQuery collection or simply a selector
@@ -120,31 +137,41 @@ Asserts the existence of a class or multiple space separated classes on each ele
 $expect('input[type=text]').to.have.class('on field');
 ```
 
-### be / a / an
-Asserts that each element in a jQuery collection matches the passed in selector.  
-
-```javascript
-$expect('div').to.be('.widget');
-$expect('input').to.be('[type=text]');
-$expect('.win').to.be.a('div');
-$expect('.list').to.be.an('ol');
-```
-
-Internally calls `$().is` so it can be passed either a selector, a function, a jQuery object, or an element.  
-For more info check out the [jQuery docs](http://api.jquery.com/is/)
-
-```javascript
-$expect('h1').to.be($headers);
-```
-
 ### Shorthand attributes
-Convenience methods for checking the following attributes / selectors:  
+Convenience methods for checking the following attributes and selectors:  
 `visible`, `hidden`, `selected`, `checked`, `disabled`, `empty`.
 
 ```javascript
 $expect('h2').to.be.hidden();
 $expect('input.submit').not.to.be.hidden('Please hide the submit button for now!');
 $expect('body').not.to.be.empty();
+```
+
+### Chaining
+You can chain assertions on an object just like you can chain methods in jQuery.  
+
+#### And
+Chains assertions on the original object.  
+
+```javascript
+$expect('div.container').to.exist().and.not.be.empty().and.to.have.width('>= 250');
+```
+
+#### that / which
+Chains assertions on different elements after calling any of the traversal methods.
+
+```javascript
+$expect('ul.todos').to.exist()
+               .and.to.have.children('li.items').that.has.css('border', '1px solid red');
+               									.and.has.attr('data-id');
+```
+
+When chaining on traveresed elements just as in jQuery you can always call `.end` to get  
+the original object back.  
+
+```javascript
+$expect('div.container').to.have.siblings('.pane').that.has.css('float', 'left')
+				   end().to.be('.loading');
 ```
 
 ### Testing events
@@ -185,30 +212,4 @@ for testing events:
           }, 100);
         });
         
-### Chaining
-You can chain assertions on an object just like you can chain methods in jQuery.  
-
-#### And
-Chains assertions on the original object.  
-
-```javascript
-$expect('div.container').to.exist().and.not.be.empty().and.to.have.width('>= 250');
-```
-
-#### that / which
-Chains assertions on different elements after calling any of the traversal methods.
-
-```javascript
-$expect('ul.todos').to.exist()
-               .and.to.have.children('li.items').that.has.css('border', '1px solid red');
-               									.and.has.attr('data-id');
-```
-
-When chaining on traveresed elements just as in jQuery you can always call `.end` to get  
-the original object back.  
-
-```javascript
-$expect('div.container').to.have.children('.pane').that.has.css('float', 'left')
-				   end().to.be('.loading');
-```
 
