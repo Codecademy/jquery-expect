@@ -54,7 +54,7 @@ $expect('.some-input').to.have.attr('value');
 ### text
 Asserts that an element has the exact same text.  
 If a number is passed in then the length of the text would be checked.  
-If a Regex is passed in then it will be matched against the text.
+If a RegExp is passed in then it will be matched against the text.
 
 ```javascript
 $expect('.link-1').to.have.text(10);
@@ -65,7 +65,7 @@ $expect('.link-2').to.have.text('Google', 'Why not?');
 
 ### contain
 Asserts that an element contains a certain text.  
-By default punctuation, whitespace, and case would be ingored. Pass in a second `true` argument to ensure a strict check.
+By default punctuation, whitespace, and case would be ignored. Pass in a second `true` argument to ensure a strict check.
 
 ```javascript
 $expect('body').to.contain('author');
@@ -100,7 +100,7 @@ $expect('body').to.have.html('<div>foo</div>');
 
 ### Traversing
 Asserts the existence of element in different directions of the DOM tree.  
-Relys on jQuery's traversal methods.
+Relies on jQuery's traversal methods.
 
 ```javascript
 $expect('body').to.have.children('.foos');
@@ -114,7 +114,7 @@ $expect('body').to.have('input');
 ```
 
 ### class
-Asserts the existence of a class or multiple space seperated classes on each element of a collection.  
+Asserts the existence of a class or multiple space separated classes on each element of a collection.  
 
 ```javascript
 $expect('input[type=text]').to.have.class('on field');
@@ -138,8 +138,8 @@ $expect('h1').to.be($headers);
 ```
 
 ### Shorthand attributes
-Convinience methods for checking the following attributes / selectors:  
-`visible`, `hidden`, `selected`, `checked`, `disabled`, `empty`
+Convenience methods for checking the following attributes / selectors:  
+`visible`, `hidden`, `selected`, `checked`, `disabled`, `empty`.
 
 ```javascript
 $expect('h2').to.be.hidden();
@@ -158,29 +158,29 @@ for testing events:
                 with the return value from it.  
 
     
-    it('should test for setting the navigation to position fixed after scrolling the page', function (next) {
-      
-      // Assign the fail and pass handlers of the deferred object to be the mocha next function.
-      // Incase of an error it would be passed and caught by mocha.
-      $expect.Assertion.asyncWait = function (evt, dfd) {
-        dfd.then(next, next);
-      };
+        it('should test for setting the navigation to position fixed after scrolling the page', function (next) {
+          
+          // Assign the fail and pass handlers of the deferred object to be the mocha next function.
+          // Incase of an error it would be passed and caught by mocha.
+          $expect.Assertion.asyncWait = function (evt, dfd) {
+            dfd.then(next, next);
+          };
 
-      // Called after the event has fired. 
-      $expect.Assertion.asyncDone = function (evt, dfd) 
-        // Here we are using the expect.js library to check the state of the deferred object.
-        // If everything went as expected it should be resolved.
-        expect(dfd.state()).to.be('resolved');
-      };
+          // Called after the event has fired. 
+          $expect.Assertion.asyncDone = function (evt, dfd) 
+            // Here we are using the expect.js library to check the state of the deferred object.
+            // If everything went as expected it should be resolved.
+            expect(dfd.state()).to.be('resolved');
+          };
 
-      // The actual call to the async event. Expect the window to scroll.
-      // And when that happens expect the nav-bar to become position fixed.
-      $expect(window).to.scroll(function () {
-        $expect('.nav-bar').to.have.css('position', 'fixed');
-      });
+          // The actual call to the async event. Expect the window to scroll.
+          // And when that happens expect the nav-bar to become position fixed.
+          $expect(window).to.scroll(function () {
+            $expect('.nav-bar').to.have.css('position', 'fixed');
+          });
 
-      // Now emulate the actual scrolling.
-      setTimeout(function () {
-        $(window).scrollTop(500);
-      }, 100);
-    });
+          // Now emulate the actual scrolling.
+          setTimeout(function () {
+            $(window).scrollTop(500);
+          }, 100);
+        });
