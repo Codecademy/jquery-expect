@@ -84,4 +84,103 @@ $expect('.header').to.have.innerWidth('>= 50')
               .and.to.have.innerWidth('<= 250');
 ```
 
+### value / val
+Asserts that an input element has a certain value. Calls `$().val`.  
 
+```javascript
+$expect('input.password').to.have.val('PlainText');
+```
+
+### html
+Asserts that an element has an html string. Calls `$().html`.  
+
+```javascript
+$expect('body').to.have.html('<div>foo</div>');
+```
+
+### Traversing
+Asserts the existence of element in different directions of the DOM tree.  
+Relys on jQuery's traversal methods.
+
+```javascript
+$expect('body').to.have.children('.foos');
+$expect('#so-lonely').to.have.siblings('.party-elements');
+```
+
+`$().find` is aliased to `$().have`
+
+```javascript
+$expect('body').to.have('input');
+```
+
+### class
+Asserts the existence of a class or multiple space seperated classes on each element of a collection.  
+
+```javascript
+$expect('input[type=text]').to.have.class('on field');
+```
+
+### be / a / an
+Asserts that each element in a jQuery collection matches the passed in selector.  
+
+```javascript
+$expect('div').to.be('.widget');
+$expect('input').to.be('[type=text]');
+$expect('.win').to.be.a('div');
+$expect('.list').to.be.an('ol');
+```
+
+Internally calls `$().is` so it can be passed either a selector, a function, a jQuery object, or an element.  
+For more info check out the [jQuery docs](http://api.jquery.com/is/)
+
+```javascript
+$expect('h1').to.be($headers);
+```
+
+### Shorthand attributes
+Convinience methods for checking the following attributes / selectors:  
+`visible`, `hidden`, `selected`, `checked`, `disabled`, `empty`
+
+```javascript
+$expect('h2').to.be.hidden();
+$expect('input.submit').not.to.be.hidden('Please hide the submit button for now!');
+$expect('body').not.to.be.empty();
+```
+
+### Testing events
+$expect defines two static methods on its exposed `Assertion` class that works as asynchronous signals  
+for testing events:  
+
+ * `asyncWait`: is called when we start waiting for an async event to happen. Called with two arguments   
+                a) event type string b) a deferred object that is resolved when the event is fired.
+ * `asyncDone`: is called when the event is fired and passed a) event type string b) a deferred object  
+                that is either rejected with the an error if the async callback threw one or resolved  
+                with the return value from it.  
+
+    
+    it('should test for setting the navigation to position fixed after scrolling the page', function (next) {
+      
+      // Assign the fail and pass handlers of the deferred object to be the mocha next function.
+      // Incase of an error it would be passed and caught by mocha.
+      $expect.Assertion.asyncWait = function (evt, dfd) {
+        dfd.then(next, next);
+      };
+
+      // Called after the event has fired. 
+      $expect.Assertion.asyncDone = function (evt, dfd) 
+        // Here we are using the expect.js library to check the state of the deferred object.
+        // If everything went as expected it should be resolved.
+        expect(dfd.state()).to.be('resolved');
+      };
+
+      // The actual call to the async event. Expect the window to scroll.
+      // And when that happens expect the nav-bar to become position fixed.
+      $expect(window).to.scroll(function () {
+        $expect('.nav-bar').to.have.css('position', 'fixed');
+      });
+
+      // Now emulate the actual scrolling.
+      setTimeout(function () {
+        $(window).scrollTop(500);
+      }, 100);
+    });
