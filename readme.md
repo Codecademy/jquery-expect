@@ -13,6 +13,24 @@ $expect('div').to.exist('Please add a div to the page!');
 
 ```
 
+### Error message
+As mentioned above, $expect ships with default error messages for each of the assertion API  
+available. But also gives the user the ability to override these error messages.  
+
+The argument following the last formal argument of any assertion method would be considered  
+as the error message overriding argument.
+
+You could either pass in a simple string or a function that should return a string to override  
+the default message.
+
+The passed in function could act as a cleanup function before throwing the assertion error.  
+It would be passed a boolean stating whether the assertion would throw or not.
+```javascript
+$expect('div').to.exist(function (willThrow) {
+  // Some cleanup code.
+  return 'Please add a div to the page.'
+});
+
 ### items / elements / length
 Asserts the `.length` property.
 
