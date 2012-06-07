@@ -184,3 +184,31 @@ for testing events:
             $(window).scrollTop(500);
           }, 100);
         });
+        
+### Chaining
+You can chain assertions on an object just like you can chain methods in jQuery.  
+
+#### And
+Chains assertions on the original object.  
+
+```javascript
+$expect('div.container').to.exist().and.not.be.empty().and.to.have.width('>= 250');
+```
+
+#### that / which
+Chains assertions on different elements after calling any of the traversal methods.
+
+```javascript
+$expect('ul.todos').to.exist()
+               .and.to.have.children('li.items').that.has.css('border', '1px solid red');
+               									.and.has.attr('data-id');
+```
+
+When chaining on traveresed elements just as in jQuery you can always call `.end` to get  
+the original object back.  
+
+```javascript
+$expect('div.container').to.have.children('.pane').that.has.css('float', 'left')
+				   end().to.be('.loading');
+```
+
