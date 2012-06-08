@@ -293,7 +293,7 @@
     var ok = this.flags.not ? !truth : truth;
 
     if ($.isFunction(msg)) {
-      error = msg = msg.call(this, ok);
+      error = msg = msg.call(this, !ok);
     }
 	
     msg = this.flags.not ? error : msg;
@@ -529,7 +529,6 @@
   Assertion.prototype.css = function (prop, val, msg) {
     prop = $.trim(prop);
     val = typeof val == 'string' ?  $.trim(val) : val;
-    msg = typeof val == 'string' ? $.trim(msg) : msg;
 
     var obj = this.obj
       , template = function (got) {

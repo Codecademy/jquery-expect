@@ -304,6 +304,16 @@ describe('$expect', function () {
     err(function () {
       $expect('.dashed').to.exist().and.be.empty().and.have.css('border', '1px dashed #fff', 'foooo');
     }, 'foooo');
+
+    err(function () {
+      $expect('.dashed').to.exist().and.be.empty().and.have.css(
+                                                                 'border'
+                                                               , '1px dashed #fff'
+                                                               , function (willThrow) {
+                                                                expect(willThrow).to.be.ok();
+                                                                return 'bar the foo'
+                                                               });
+    }, 'bar the foo');
   });
 
   it('should test event tests', function (n) {
@@ -400,11 +410,11 @@ describe('$expect', function () {
 
   it('should test passing function as message', function () {
     err(function () {
-      $expect('div').not.to.exist(function (truth) {
+      $expect('div').not.to.exist(function (willThrow) {
         expect(this).to.be.a($expect.Assertion);
         expect(this.obj).to.be.a($);
         $expect(this.obj).to.be.eql('div');
-        expect(truth).to.not.be.ok();
+        expect(willThrow).to.be.ok();
         return 'foo bar error';
       });
     }, 'foo bar error');
