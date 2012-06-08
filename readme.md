@@ -1,6 +1,23 @@
 # $expect
 A jQuery assertion library based on [LearnBoost's expect.js](https://github.com/LearnBoost/expect.js)
 
+## Running tests
+
+    git clone https://github.com/Coedcademy/jquery-expect.git
+    cd jquery-expect
+    npm install
+
+### Running in phantom.js
+
+    make test
+
+### Running in browser
+
+    make test-browser
+
+Navigate your browser to http://localhost:8080/test
+
+
 ## API
 For all API methods the last argument passed will override the default assertion error message.
 
