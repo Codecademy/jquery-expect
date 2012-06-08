@@ -206,32 +206,33 @@ for testing events:
 
 
 ```javascript
-it('should test for setting the navigation to position fixed after scrolling the page', function (next) {
-  
-  // Assign the fail and pass handlers of the deferred object to be the mocha next function.
-  // Incase of an error it would be passed and caught by mocha.
-  $expect.Assertion.asyncWait = function (evt, dfd) {
-    dfd.then(next, next);
-  };
-
-  // Called after the event has fired. 
-  $expect.Assertion.asyncDone = function (evt, dfd) 
-    // Here we are using the expect.js library to check the state of the deferred object.
-    // If everything went as expected it should be resolved.
-    expect(dfd.state()).to.be('resolved');
-  };
-
-  // The actual call to the async event. Expect the window to scroll.
-  // And when that happens expect the nav-bar to become position fixed.
-  $expect(window).to.scroll(function () {
-    $expect('.nav-bar').to.have.css('position', 'fixed');
-  });
-
-  // Now emulate the actual scrolling.
-  setTimeout(function () {
-    $(window).scrollTop(500);
-  }, 100);
-});
+it('should test for setting the navigation to position fixed after scrolling the page'
+  , function (next) {
+		  // Assign the fail and pass handlers of the deferred object to be the mocha next function.
+		  // Incase of an error it would be passed and caught by mocha.
+		  $expect.Assertion.asyncWait = function (evt, dfd) {
+		    dfd.then(next, next);
+		  };
+		
+		  // Called after the event has fired. 
+		  $expect.Assertion.asyncDone = function (evt, dfd) 
+		    // Here we are using the expect.js library to check the state of the deferred object.
+		    // If everything went as expected it should be resolved.
+		    expect(dfd.state()).to.be('resolved');
+		  };
+		
+		  // The actual call to the async event. Expect the window to scroll.
+		  // And when that happens expect the nav-bar to become position fixed.
+		  $expect(window).to.scroll(function () {
+		    $expect('.nav-bar').to.have.css('position', 'fixed');
+		  });
+		
+		  // Now emulate the actual scrolling.
+		  setTimeout(function () {
+		    $(window).scrollTop(500);
+		  }, 100);
+	}
+);
 ```     
 
 ## License
