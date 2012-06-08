@@ -1,3 +1,7 @@
+/*
+  MIT License.  
+  Copyright (c) 2012 Amjad Masad <amjad@codecademy.com> Ryzac, Inc.
+*/
 
 (function (global, undefined) {
 
@@ -39,19 +43,6 @@
 
   function i (obj) {
     return obj.selector || obj;
-  }
-
-  /**
-   * Convert rgb(x, y, z) -> Hex
-   * source: http://wowmotty.blogspot.com/2009/06/convert-jquery-rgb-output-to-hex-color.html
-   */
-
-  function rgb2hex (rgb) {
-    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
-    return "#" +
-      ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
-      ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
-      ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
   }
 
   /**
@@ -274,12 +265,19 @@
     }
   };
 
+
+  /**
+   * Constructor
+   * @inherits Error
+   */
+   
   function AssertionError (msg) {
     Error.call(this);
     if (Error.captureStackTrace) Error.captureStackTrace(this, arguments.callee);
     this.message = msg;
     this.name = 'AssertionError';
   }
+  
   AssertionError.prototype = new Error;
 
   /**
@@ -308,7 +306,7 @@
   };
 
   /**
-   * Check if the $ object has any elements.
+   * Check if the jQuery object has any elements.
    *
    * @api public
    */
@@ -428,6 +426,19 @@
 
 
   /**
+   * Convert rgb(x, y, z) -> Hex
+   * source: http://wowmotty.blogspot.com/2009/06/convert-jquery-rgb-output-to-hex-color.html
+   */
+
+  function rgb2hex (rgb) {
+    rgb = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
+    return "#" +
+      ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+      ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+      ("0" + parseInt(rgb[3],10).toString(16)).slice(-2);
+  }
+  
+  /**
    * Takes color in any format and returns it in a HEX (uppercase) format.
    */
 
@@ -510,6 +521,9 @@
    * Assert having a css value.
    *
    * @api public
+   * @param {String} prop
+   * @param {*} val
+   * @param {String|Function} msg
    */
 
   Assertion.prototype.css = function (prop, val, msg) {
@@ -591,7 +605,7 @@
    * strict equality.
    *
    * @param {String} val
-   * @param @optional {Boolean} strict 
+   * @param {String|Function} msg
    * @api public
    */
 
@@ -624,6 +638,16 @@
     return this;
   };
 
+  /**
+   * Asserts that an element has certain text. The check is loose by default, meaning punctuation
+   * and spaces are stripped out and case is ignored. Pass in true as the second argument for 
+   * strict equality.
+   *
+   * @param {String} val
+   * @param @optional {Boolean} strict
+   * @param {String|Function} msg
+   * @api public
+   */
   Assertion.prototype.contain = function (text, strict, msg) {
     if ('boolean' != typeof strict) {
       msg = strict;
@@ -650,7 +674,7 @@
   /**
    * Asserts the value of the following jquery accessor functions.
    *
-   * @param {Mixed} val
+   * @param {*} val
    * @api public
    */
 
@@ -695,6 +719,13 @@
           };
         });
 
+  /**
+   * Asserts that an input element has a value.
+   *
+   * @param {String|Number} val
+   * @param {String|Function} msg
+   * @api public
+   */
   Assertion.prototype.value = 
   Assertion.prototype.val = function (val, msg) {
     var got;
@@ -704,7 +735,13 @@
       , msg || 'expected ' + i(this.obj) + ' not to have value ' + val)
   };
 
-
+  /**
+   * Asserts the equality of an element's HTML with a string.
+   *
+   * @param {String} html
+   * @param {String|Function} msg
+   * @api public
+   */
   Assertion.prototype.html = function (html, msg) {
     var got;
     this.assert(
@@ -745,7 +782,7 @@
   Assertion.prototype.have = Assertion.prototype.find;
 
   /**
-   * Asserts the element(s) using the jquery is method.
+   * Asserts the element(s) using the jquery $().is method.
    *
    * @api public
    */
@@ -770,11 +807,19 @@
     return new Assertion(this.obj.end());
   };
 
+  /**
+   * Async testing signals. Meant to be overridden.
+   * 
+   * @param {String} evt
+   * @param {Deferred} dfd
+   */
   Assertion.asyncWait = function (evt, dfd) {};
   Assertion.asyncDone = function (evt, dfd) {};
 
   /**
    * Attaches a *once* callback to an event.
+   * Calls asyncWait with the eventType and a deferred object.
+   * When the event is fired the deferred is resolved and passed to asynDone alont with the eventType.
    *
    * @api public
    * @param {String} evt
@@ -807,6 +852,7 @@
    * Shorthand methods for event binding. Just like jQuery!
    *
    * @api public
+   * @param {Function} cb
    */
   $.each([ 'blur', 'change', 'click', 'dblclick', 'error', 'focus'
          , 'focusin', 'focusout', 'hover', 'keydown', 'keypress'
@@ -819,6 +865,13 @@
             };
           });
 
+  /**
+   * Shorthand methods for event binding. Just like jQuery!
+   *
+   * @api public
+   * @param {String} className
+   * @param {String|Function} msg
+   */
   Assertion.prototype.class = function (className, msg) {
     var that = this;
     this.obj.each(function (_, el) {
@@ -831,6 +884,12 @@
     return this;
   };
 
+  /**
+   * Convenience methods for pseudo-selectors assertions.
+   *
+   * @api public
+   * @param {String|Function} msg
+   */
   $.each([ 'visible', 'hidden', 'selected', 
          , 'checked', 'disabled', 'empty'], function (_, attr) {
           Assertion.prototype[attr] = function (msg) {
