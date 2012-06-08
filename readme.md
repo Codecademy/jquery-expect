@@ -1,7 +1,7 @@
 # $expect
 A jQuery assertion library based on [LearnBoost's expect.js](https://github.com/LearnBoost/expect.js)
 
-# API
+## API
 For all API methods the last argument passed will override the default assertion error message.
 
 ### exist
@@ -233,3 +233,6 @@ for testing events:
         });
         
 
+## License
+MIT License.  
+Copyright (c) 2012 Amjad Masad <amjad@codecademy.com> Ryzac, Inc.
