@@ -363,12 +363,6 @@ describe('$expect', function () {
     err(function () {
       $expect('div').to.be.a($('li.first'), 'foobar');
     }, 'foobar');
-
-    $expect('li.first').to.be(':odd');
-
-    err(function () {
-      $expect('li.first').to.be(':even');
-    }, 'expected li.first to be :even')
     
   });
 
