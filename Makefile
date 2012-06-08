@@ -6,8 +6,16 @@ minify:
 #
 # Adapted from bootstrap
 #
-tests	:
+test:
 	node test/server.js &
 	phantomjs test/phantom.js "http://localhost:8080/test"
 	kill -9 `cat test/pid.txt`
 	rm test/pid.txt
+
+
+# Tests in browser
+test-browser:
+	node test/server.js
+
+
+.PHONY: test
