@@ -1,5 +1,5 @@
 # $expect
-A jQuery assertion library based on [LearnBoost's expect.js](https://github.com/LearnBoost/expect.js)
+A DOM assertion library built on top of jQuery and based on [LearnBoost's expect.js](https://github.com/LearnBoost/expect.js)
 
 ## Running tests
 
