@@ -3,7 +3,7 @@ A DOM assertion library built on top of jQuery and based on [LearnBoost's expect
 
 ## Running tests
 
-    git clone https://github.com/Coedcademy/jquery-expect.git
+    git clone https://github.com/Codecademy/jquery-expect.git
     cd jquery-expect
     npm install
 
