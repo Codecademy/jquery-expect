@@ -5,6 +5,9 @@
   , "keywords": ["jQuery", "test", "DOM", "Assertion"]
   , "homepage": "http://codecademy.com"
   , "author": "Ryzac, Inc."
+  , "scripts": {
+      "test": "make test"
+    }
   , "devDependencies": {
       "uglify-js": "1.2.6"
     , "jshint": "0.6.1"
