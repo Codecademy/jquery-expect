@@ -4,7 +4,7 @@ var connect = require('connect')
   , fs   = require('fs')
   , app = connect()
       .use(connect.static(__dirname + '/../'));
-
-http.createServer(app).listen(8080);
+      
+http.createServer(app).listen(process.argv[2] || '80');
 
 fs.writeFileSync(__dirname + '/pid.txt', process.pid, 'utf-8');
