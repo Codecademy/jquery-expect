@@ -1,4 +1,4 @@
-# $expect
+# $expect [![Build Status](https://secure.travis-ci.org/Codecademy/jquery-expect.png)](http://travis-ci.org/Codecademy/jquery-expect)
 A DOM assertion library built on top of jQuery and based on [LearnBoost's expect.js](https://github.com/LearnBoost/expect.js)
 
 ## Running tests

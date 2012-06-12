@@ -2,7 +2,7 @@
 // Adapted from Bootstrap
 
 function waitFor(testFx, onReady, timeOutMillis) {
-  var maxtimeOutMillis = timeOutMillis ? timeOutMillis :  5001 //< Default Max Timout is 5s
+  var maxtimeOutMillis = timeOutMillis ? timeOutMillis :  10000 //< Default Max Timout is 10000
     , start = new Date().getTime()
     , condition = false
     , interval = setInterval(function () {
