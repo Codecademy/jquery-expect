@@ -276,7 +276,6 @@ describe('$expect', function () {
     }, 'expected .half-pad to have its border-top style equal to dashed but got 2px dashed #FF0000');
 
     $expect('.half-pad').to.have.css('border-top', '2px dashed red')
-    $expect('.half-pad').to.have.css('border', '2px dashed red')
     $expect('.padder').to.have.css('border', '1px solid red')
 
     err(function () {

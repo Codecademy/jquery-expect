@@ -561,21 +561,21 @@
         case 'border-left':
         case 'border-bottom':
           got = borderQuad(obj, prop, val);  
-          passing = got.passing
+          passing = got.passing;
           got = got.got;
           break;
 
         case 'border':
-          var passing = true
-            , got = $.map(['top', 'right', 'left', 'bottom'], function (style, i) {
-                var ret = borderQuad(obj, prop + '-top', val);
-                if (!ret.passing) passing = false;
-                return ret.got;
-              });
+          passing = true;
+          got = $.map(['top', 'right', 'left', 'bottom'], function (dir) {
+            var ret = borderQuad(obj, prop + '-' + dir, val);
+            if (!ret.passing) passing = false;
+            return ret.got;
+          });
 
           // Array unique.
           got = $.map(got, function (g, i) {
-            return $.inArray(g, got) == i ? g : null;
+            return $.inArray(g, got) === i ? g : null;
           }).join(' ');
 
           break;
@@ -591,7 +591,7 @@
     }
    
     this.obj.each(function (_, el) {
-      check($(el))
+      check($(el));
     });
 
     return this;
