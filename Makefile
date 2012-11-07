@@ -3,6 +3,9 @@
 minify:
 	uglifyjs -nc jquery.expect.js > jquery.expect.min.js
 
+lint:
+	jshint jquery.expect.js
+
 #
 # Adapted from bootstrap
 #

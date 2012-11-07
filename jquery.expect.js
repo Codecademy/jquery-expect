@@ -4,10 +4,9 @@
 */
 
 (function (global, undefined) {
-
-  global.$expect = $expect;
-  $expect.Assertion = Assertion;
-  $expect.AssertionError = AssertionError;
+  
+  var jQuery = global.jQuery
+    , $ = jQuery;
 
   function $expect (obj) {
     return new Assertion(obj);
@@ -26,15 +25,15 @@
       return Object.keys(obj);
     }
 
-    var keys = [];
+    var ret = [];
 
     for (var i in obj) {
       if (Object.prototype.hasOwnProperty.call(obj, i)) {
-        keys.push(i);
+        ret.push(i);
       }
     }
 
-    return keys;
+    return ret;
   }
 
   /**
@@ -224,18 +223,18 @@
     this.obj = obj instanceof jQuery ? obj : $(obj);
     this.flags = {};
 
-    if (undefined != parent) {
+    if (undefined !== parent) {
       this.flags[flag] = true;
 
-      for (var i in parent.flags) {
-        if (parent.flags.hasOwnProperty(i)) {
-          this.flags[i] = true;
+      for (var p in parent.flags) {
+        if (parent.flags.hasOwnProperty(p)) {
+          this.flags[p] = true;
         }
       }
     }
 
     var $flags = flag ? flags[flag] : keys(flags)
-      , self = this
+      , self = this;
 
     if ($flags) {
       for (var i = 0, l = $flags.length; i < l; i++) {
@@ -243,17 +242,17 @@
         (function () {
           // avoid recursion
           var name = $flags[i]
-            , assertion = new Assertion(this.obj, name, this)
+            , assertion = new Assertion(this.obj, name, this);
 
-          if ('function' == typeof Assertion.prototype[name]) {
+          if ('function' === typeof Assertion.prototype[name]) {
             // clone the function, make sure we dont touch the prot reference
             var old = this[name];
             this[name] = function () {
               return old.apply(self, arguments);
-            }
+            };
 
             for (var fn in Assertion.prototype) {
-              if (Assertion.prototype.hasOwnProperty(fn) && fn != name) {
+              if (Assertion.prototype.hasOwnProperty(fn) && fn !== name) {
                 this[name][fn] = $.proxy(assertion[fn], assertion);
               }
             }
@@ -263,7 +262,7 @@
         }).call(this);
       }
     }
-  };
+  }
 
 
   /**
@@ -273,12 +272,17 @@
    
   function AssertionError (msg) {
     Error.call(this);
+    /*jshint noarg:false*/
     if (Error.captureStackTrace) Error.captureStackTrace(this, arguments.callee);
     this.message = msg;
     this.name = 'AssertionError';
   }
   
-  AssertionError.prototype = new Error;
+  AssertionError.prototype = new Error();
+
+  global.$expect = $expect;
+  $expect.Assertion = Assertion;
+  $expect.AssertionError = AssertionError;
 
   /**
    * Performs an assertion
@@ -331,7 +335,7 @@
   Assertion.prototype.length = function (n, msg) {
     var len = this.obj.length;
     this.assert(
-        n == len
+        n === len
       , msg || 'expected ' + i(this.obj) + ' to have a length of ' + n + ' but got ' + len
       , msg || 'expected ' + i(this.obj) + ' to not have a length of ' + len);
     return this;
@@ -380,7 +384,7 @@
   Assertion.prototype.equal = function ($el, msg) {
     $el = $el instanceof jQuery ? $el : $($el);
     
-  	// Returns true if every element in a appears exactly once in b.
+    // Returns true if every element in a appears exactly once in b.
     var injSurj = function(a,b) {
       if (a.length !== b.length) return false;
 
@@ -413,7 +417,7 @@
       this.assert(
           undefined !== got
         , msg || 'expected ' + i(this.obj) + ' to have an attribute ' + prop
-        , msg || 'expected ' + i(this.obj) + ' not to have attribute ' + prop)
+        , msg || 'expected ' + i(this.obj) + ' not to have attribute ' + prop);
     } else {
       this.assert(
           got === val
@@ -444,10 +448,11 @@
 
   function normalizeColor (color) {
     if (!color) return '';
+    
+    function r (x) { return x.toUpperCase() + x.toUpperCase(); }
 
     if (color.match(/^#/)) {
       if (color.length === 4) {
-        function r (x) {return x.toUpperCase() + x.toUpperCase()}
         return '#' + r(color.charAt(1)) + r(color.charAt(2)) + r(color.charAt(3));
       }
       return color.toUpperCase();
@@ -528,7 +533,7 @@
 
   Assertion.prototype.css = function (prop, val, msg) {
     prop = $.trim(prop);
-    val = typeof val == 'string' ?  $.trim(val) : val;
+    val = typeof val === 'string' ?  $.trim(val) : val;
 
     var obj = this.obj
       , template = function (got) {
@@ -543,7 +548,7 @@
         case 'backgroundColor':
         case 'background-color':
         case 'color':
-          passing = (got = normalizeColor(obj.css(prop))) === normalizeColor(val)
+          passing = (got = normalizeColor(obj.css(prop))) === normalizeColor(val);
           break;
 
         case 'border-style':
@@ -611,7 +616,7 @@
   Assertion.prototype.text = function (val, msg) {
     var text = this.obj.text();
 
-    if ('number' == typeof val) {
+    if ('number' === typeof val) {
       this.assert(
           text.length === val
         , msg || 'expected ' + i(this.obj) + ' text to be of length ' + val + ' but got ' + text.length
@@ -620,18 +625,18 @@
       this.assert(
           val.test(text)
         , msg || 'expected ' + i(this.obj) + ' text to match ' + String(val)
-        , msg || 'expected ' + i(this.obj) + ' text not to match ' + String(val))
+        , msg || 'expected ' + i(this.obj) + ' text not to match ' + String(val));
     } else if (null == val) {
       this.assert(
           !!text.length
         , msg || 'expected ' + i(this.obj) + ' to have text'
-        , msg || 'expected ' + i(this.obj) + ' to not have text')
+        , msg || 'expected ' + i(this.obj) + ' to not have text');
     } else {
       val = String(val);
       this.assert(
           text === val
         , msg || 'expected ' + i(this.obj) + ' text to be equal to ' + val + ' but got ' + text
-        , msg || 'expected ' + i(this.obj) + ' text to not be equal to ' + val)
+        , msg || 'expected ' + i(this.obj) + ' text to not be equal to ' + val);
     }
 
     return this;
@@ -648,7 +653,7 @@
    * @api public
    */
   Assertion.prototype.contain = function (text, strict, msg) {
-    if ('boolean' != typeof strict) {
+    if ('boolean' !== typeof strict) {
       msg = strict;
       strict = false;
     }
@@ -683,10 +688,10 @@
          ], function (_, fn) {
           Assertion.prototype[fn] = function (val, msg) {
             var ops = {
-              '>': function (v1, v2) {return v1 > v2}
-            , '>=': function (v1, v2) {return v1 >= v2}
-            , '<': function (v1, v2) {return v1 < v2}
-            , '<=': function (v1, v2) {return v1 <= v2}
+              '>': function (v1, v2) { return v1 > v2; }
+            , '>=': function (v1, v2) { return v1 >= v2; }
+            , '<': function (v1, v2) { return v1 < v2; }
+            , '<=': function (v1, v2) { return v1 <= v2; }
             };
 
             if ('string' === typeof val && (ops[$.trim(val).slice(0, 2)] || ops[$.trim(val).charAt(0)])) {
@@ -705,13 +710,13 @@
               this.assert(
                   op(v, val)
                 , msg || 'expected ' + i(this.obj) + ' to have a ' + fn + '  ' + opName + ' ' + val
-                , msg || 'expected ' + i(this.obj) + ' not to have a ' + fn + '  ' + opName + ' ' + val)
+                , msg || 'expected ' + i(this.obj) + ' not to have a ' + fn + '  ' + opName + ' ' + val);
             } else {
               var got;
               this.assert(
                   (got = this.obj[fn]()) === val
                 , msg || 'expected ' + i(this.obj) + ' to have a ' + fn + ' of ' + val + ' but got ' + got
-                , msg || 'expected ' + i(this.obj) + ' not to have a ' + fn + ' of ' + val)
+                , msg || 'expected ' + i(this.obj) + ' not to have a ' + fn + ' of ' + val);
             }
 
             return this;
@@ -731,7 +736,7 @@
     this.assert(
         (got = this.obj.val()) === val
       , msg || 'expected ' + i(this.obj) + ' to have value ' + val + ' but got ' + got
-      , msg || 'expected ' + i(this.obj) + ' not to have value ' + val)
+      , msg || 'expected ' + i(this.obj) + ' not to have value ' + val);
   };
 
   /**
@@ -746,7 +751,7 @@
     this.assert(
         (got = this.obj.html()) === html
       , msg || 'expected ' + i(this.obj) + ' to have HTML ' + html + ' but got ' + got
-      , msg || 'expected ' + i(this.obj) + ' not to have HTML ' + html)
+      , msg || 'expected ' + i(this.obj) + ' not to have HTML ' + html);
   };
 
   /**
@@ -757,7 +762,7 @@
    * @api public
    */
 
-  $.each([ 'children', 'closest', 'find', 
+  $.each([ 'children', 'closest', 'find'
          , 'next', 'nextAll', 'nextUntil'
          , 'offsetParent', 'parent', 'parents'
          , 'parentsUntil', 'prev', 'prevAll'
@@ -774,7 +779,7 @@
             this.that = this.which = new Assertion(got);
 
             return this;
-          }
+          };
          });
 
   // alias
@@ -812,8 +817,8 @@
    * @param {String} evt
    * @param {Deferred} dfd
    */
-  Assertion.asyncWait = function (evt, dfd) {};
-  Assertion.asyncDone = function (evt, dfd) {};
+  Assertion.asyncWait = function (/*evt, dfd*/) {};
+  Assertion.asyncDone = function (/*evt, dfd*/) {};
 
   /**
    * Attaches a *once* callback to an event.
@@ -891,13 +896,13 @@
    * @param {String} className
    * @param {String|Function} msg
    */
-  Assertion.prototype.class = function (className, msg) {
+  Assertion.prototype['class'] = function (className, msg) {
     var that = this;
     this.obj.each(function (_, el) {
       that.assert(
           $(el).hasClass(className)
         , msg || 'expected ' + i(that.obj) + ' to have class ' + className
-        , msg || 'expected ' + i(that.obj) + ' not to have class ' + className)
+        , msg || 'expected ' + i(that.obj) + ' not to have class ' + className);
     });
 
     return this;
@@ -909,7 +914,7 @@
    * @api public
    * @param {String|Function} msg
    */
-  $.each([ 'visible', 'hidden', 'selected', 
+  $.each([ 'visible', 'hidden', 'selected'
          , 'checked', 'disabled', 'empty'], function (_, attr) {
           Assertion.prototype[attr] = function (msg) {
             this.assert(
