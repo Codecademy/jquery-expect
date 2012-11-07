@@ -392,7 +392,7 @@ describe('$expect', function () {
     $expect('.selected').to.be.selected();
     $expect('.disabled').to.be.disabled();
     err(function () {
-      $expect('li.first').to.be.disabled()  
+      $expect('li.first').to.be.disabled(); 
     }, 'expected li.first to be disabled');
 
     $expect('.hidden').to.be.empty();
@@ -412,5 +412,33 @@ describe('$expect', function () {
         return 'foo bar error';
       });
     }, 'foo bar error');
+  });
+
+  it('should test wait', function (next) {
+    $expect.Assertion.asyncWait = function (evt, dfd) {
+      dfd.then(next, next);
+    };
+
+    $expect.Assertion.asyncDone = function (evt, dfd) {
+      expect(dfd.state()).to.be('resolved');
+    };
+
+    $expect.wait(200, function () {
+      // noop
+    });
+  });
+
+  it('should test wait with a callback throwing an error', function (next) {
+    $expect.Assertion.asyncWait = function (evt, dfd) {
+      dfd.then(function () {}, function () {next();});
+    };
+
+    $expect.Assertion.asyncDone = function (evt, dfd) {
+      expect(dfd.state()).to.be('rejected');
+    };
+
+    $expect.wait(200, function () {
+      foobar;
+    });
   });
 });

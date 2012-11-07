@@ -848,6 +848,26 @@
   };
 
   /**
+   * Wait before executing a callback
+   * @api public
+   * @param {String} evt
+   * @param {Function} cb
+   */
+   $expect.wait = function (delay, cb) {
+    var dfd = $.Deferred();
+    setTimeout(function () {
+      try {
+        cb();
+        dfd.resolve();
+      } catch (e) {
+        dfd.reject(e);
+      }
+      Assertion.asyncDone(null, dfd);
+    }, delay);
+    Assertion.asyncWait(null, dfd);
+   };
+
+  /**
    * Shorthand methods for event binding. Just like jQuery!
    *
    * @api public
