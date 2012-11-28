@@ -523,6 +523,15 @@
   }
 
   /**
+   * Array unique and join.
+   */
+  function stringifyGot (got) {
+    return $.map(got, function (g, i) {
+      return $.inArray(g, got) === i ? g : null;
+    }).join(' ');
+  }
+
+  /**
    * Assert having a css value.
    *
    * @api public
@@ -577,12 +586,16 @@
             if (!ret.passing) passing = false;
             return ret.got;
           });
+          got = stringifyGot(got);
+          break;
 
-          // Array unique.
-          got = $.map(got, function (g, i) {
-            return $.inArray(g, got) === i ? g : null;
-          }).join(' ');
-
+        case 'border-radius':
+          got = [];
+          passing =  ((got[0] = obj.css('border-top-left-radius'))     === val)
+                  && ((got[1] = obj.css('border-top-right-radius'))    === val)
+                  && ((got[2] = obj.css('border-bottom-left-radius'))  === val)
+                  && ((got[3] = obj.css('border-bottom-right-radius')) === val);
+          got = stringifyGot(got);
           break;
 
         default:
