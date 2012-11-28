@@ -440,4 +440,8 @@ describe('$expect', function () {
       foobar;
     });
   });
+
+  it('should correctly test shorthand border-radius', function () {
+    $expect('.radius').to.have.css('border-radius', '10px');
+  });
 });
