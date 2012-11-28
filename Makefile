@@ -18,7 +18,7 @@ test:
 
 # Tests in browser
 test-browser:
-	node test/server.js
+	node test/server.js 8080
 
 
 .PHONY: test
