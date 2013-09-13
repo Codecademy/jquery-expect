@@ -315,36 +315,36 @@ describe('$expect', function () {
     }, 'bar the foo');
   });
 
-  it('should test event tests', function (n) {
-    var s = 0;
-    $(window).on('scroll.once', function () {
-      $(window).off('scroll.once');
-      $('body').append('<div class="after-scroll" />');
-      $(window).scrollTop(s);
-    });
+  // it('should test event tests', function (n) {
+  //   var s = 0;
+  //   $(window).on('scroll.once', function () {
+  //     $(window).off('scroll.once');
+  //     $('body').append('<div class="after-scroll" />');
+  //     $(window).scrollTop(s);
+  //   });
 
-    $expect.Assertion.asyncWait = function (evt, dfd) {
-      dfd.then(n, n);
-    };
+  //   $expect.Assertion.asyncWait = function (evt, dfd) {
+  //     dfd.then(n, n);
+  //   };
 
-    $expect.Assertion.asyncDone = function (evt, dfd) {
-      expect(dfd.state()).to.be('resolved');
-    };
+  //   $expect.Assertion.asyncDone = function (evt, dfd) {
+  //     expect(dfd.state()).to.be('resolved');
+  //   };
 
-    $expect(window).to.scroll(function () {
-      $expect('body').to.have('.after-scroll');
+  //   $expect(window).to.scroll(function () {
+  //     $expect('body').to.have('.after-scroll');
 
-      err(function () {
-        // Old api. contain used to alias find.
-        $expect('body').to.contain('.after-scroll');
-      }, 'expected body to contain ".after-scroll"');
-    });
+  //     err(function () {
+  //       // Old api. contain used to alias find.
+  //       $expect('body').to.contain('.after-scroll');
+  //     }, 'expected body to contain ".after-scroll"');
+  //   });
 
-    setTimeout(function () {
-      s = $(window).scrollTop();
-      $(window).scrollTop(500);
-    });
-  });
+  //   setTimeout(function () {
+  //     s = $(window).scrollTop();
+  //     $(window).scrollTop(500);
+  //   });
+  // });
 
   it('should test for a', function () {
     $expect('div').to.be.a('div');
@@ -413,33 +413,33 @@ describe('$expect', function () {
     }, 'foo bar error');
   });
 
-  it('should test wait', function (next) {
-    $expect.Assertion.asyncWait = function (evt, dfd) {
-      dfd.then(next, next);
-    };
+  // it('should test wait', function (next) {
+  //   $expect.Assertion.asyncWait = function (evt, dfd) {
+  //     dfd.then(next, next);
+  //   };
 
-    $expect.Assertion.asyncDone = function (evt, dfd) {
-      expect(dfd.state()).to.be('resolved');
-    };
+  //   $expect.Assertion.asyncDone = function (evt, dfd) {
+  //     expect(dfd.state()).to.be('resolved');
+  //   };
 
-    $expect.wait(200, function () {
-      // noop
-    });
-  });
+  //   $expect.wait(200, function () {
+  //     // noop
+  //   });
+  // });
 
-  it('should test wait with a callback throwing an error', function (next) {
-    $expect.Assertion.asyncWait = function (evt, dfd) {
-      dfd.then(function () {}, function () {next();});
-    };
+  // it('should test wait with a callback throwing an error', function (next) {
+  //   $expect.Assertion.asyncWait = function (evt, dfd) {
+  //     dfd.then(function () {}, function () {next();});
+  //   };
 
-    $expect.Assertion.asyncDone = function (evt, dfd) {
-      expect(dfd.state()).to.be('rejected');
-    };
+  //   $expect.Assertion.asyncDone = function (evt, dfd) {
+  //     expect(dfd.state()).to.be('rejected');
+  //   };
 
-    $expect.wait(200, function () {
-      foobar;
-    });
-  });
+  //   $expect.wait(200, function () {
+  //     foobar;
+  //   });
+  // });
 
   it('should correctly test shorthand border-radius', function () {
     $expect('.radius').to.have.css('border-radius', '10px');

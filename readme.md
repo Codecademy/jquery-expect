@@ -211,47 +211,6 @@ $expect('div.container').to.have.siblings('.pane').that.has.css('float', 'left')
 				   end().to.be('.loading');
 ```
 
-### Testing events
-$expect defines two static methods on its exposed `Assertion` class that works as asynchronous signals  
-for testing events:  
-
- * `asyncWait`: is called when we start waiting for an async event to happen. Called with two arguments   
-                a) event type string b) a deferred object that is resolved when the event is fired.
- * `asyncDone`: is called when the event is fired and passed a) event type string b) a deferred object  
-                that is either rejected with the an error if the async callback threw one or resolved  
-                with the return value from it.  
-
-
-```javascript
-it('should test for setting the navigation to position fixed after scrolling the page'
-  , function (next) {
-		  // Assign the fail and pass handlers of the deferred object to be the mocha next function.
-		  // Incase of an error it would be passed and caught by mocha.
-		  $expect.Assertion.asyncWait = function (evt, dfd) {
-		    dfd.then(next, next);
-		  };
-		
-		  // Called after the event has fired. 
-		  $expect.Assertion.asyncDone = function (evt, dfd) 
-		    // Here we are using the expect.js library to check the state of the deferred object.
-		    // If everything went as expected it should be resolved.
-		    expect(dfd.state()).to.be('resolved');
-		  };
-		
-		  // The actual call to the async event. Expect the window to scroll.
-		  // And when that happens expect the nav-bar to become position fixed.
-		  $expect(window).to.scroll(function () {
-		    $expect('.nav-bar').to.have.css('position', 'fixed');
-		  });
-		
-		  // Now emulate the actual scrolling.
-		  setTimeout(function () {
-		    $(window).scrollTop(500);
-		  }, 100);
-	}
-);
-```     
-
 ## License
 MIT License.  
 Copyright (c) 2012 Amjad Masad &lt;amjad@codecademy.com&gt; Ryzac, Inc.

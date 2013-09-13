@@ -279,6 +279,7 @@
   }
   
   AssertionError.prototype = new Error();
+  AssertionError.prototype.constructor = AssertionError;
 
   global.$expect = $expect;
   $expect.Assertion = Assertion;
@@ -299,7 +300,7 @@
     if ($.isFunction(msg)) {
       error = msg = msg.call(this, !ok);
     }
-	
+  
     msg = this.flags.not ? error : msg;
 
     if (!ok) {
@@ -392,7 +393,7 @@
         return $.inArray(el, b) > -1 ? true : null;
       }).length === a.length;
     };
-	
+  
     // Arrays are equal if every element in this.obj 
     // appears in $el, and vice-versa.
     var eq = injSurj(this.obj, $el) && injSurj($el, this.obj);
@@ -825,13 +826,23 @@
   };
 
   /**
-   * Async testing signals. Meant to be overridden.
+   * Async testing signals.
    * 
-   * @param {String} evt
-   * @param {Deferred} dfd
+   * @param {String} event
+   * @param {Deferred} deferred
    */
-  Assertion.asyncWait = function (/*evt, dfd*/) {};
-  Assertion.asyncDone = function (/*evt, dfd*/) {};
+  function DeferredSignal (deferred, event, args) {
+    this.deferred = deferred;
+    this.event = event;
+    this.args = args;
+  }
+
+  DeferredSignal.prototype = new Error();
+  $expect.DeferredSignal = DeferredSignal;
+
+  function signal (deferred, event /* args... */) {
+    throw new DeferredSignal(deferred, event, [].slice.call(arguments, 2));
+  }
 
   /**
    * Attaches a *once* callback to an event.
@@ -856,13 +867,11 @@
           } catch (e) {
             dfd.rejectWith(obj, [e, ret]);
           }
-
-          Assertion.asyncDone(evt, dfd);
           return ret;
         };
 
     this.obj.on(evt, callback);
-    Assertion.asyncWait(evt, dfd);
+    return signal(dfd, evt, String(i(this.obj)));
   };
 
   /**
@@ -880,10 +889,36 @@
       } catch (e) {
         dfd.reject(e);
       }
-      Assertion.asyncDone(null, dfd);
     }, delay);
-    Assertion.asyncWait(null, dfd);
+
+    return signal(dfd, 'wait', delay);
    };
+
+   /**
+    * Wait for a callback to call our done callback to reject or resolve a
+    * deferred with a string that would be made an assertion error.
+    * @api public
+    * @param {Function} cb
+    */
+   $expect.async = function (cb) {
+     var dfd = $.Deferred();
+     var done = function (res) {
+      if (res) {
+        var err = new AssertionError(String(res));
+        dfd.reject(err);
+      } else {
+        dfd.resolve();
+      }
+    };
+    setTimeout(function () {
+      try {
+        cb(done);
+      } catch (e) {
+        dfd.reject(e);
+      }
+    }, 0);
+    return signal(dfd, 'async');
+  };
 
   /**
    * Shorthand methods for event binding. Just like jQuery!
