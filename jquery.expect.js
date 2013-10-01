@@ -12,6 +12,11 @@
     return new Assertion(obj);
   }
 
+  if (window.require && !jQuery) {
+    jQuery = $ = require("jquery");
+    module.exports = $expect;
+  }
+
   /**
    * Utilities
    */
