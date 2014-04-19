@@ -413,34 +413,6 @@ describe('$expect', function () {
     }, 'foo bar error');
   });
 
-  // it('should test wait', function (next) {
-  //   $expect.Assertion.asyncWait = function (evt, dfd) {
-  //     dfd.then(next, next);
-  //   };
-
-  //   $expect.Assertion.asyncDone = function (evt, dfd) {
-  //     expect(dfd.state()).to.be('resolved');
-  //   };
-
-  //   $expect.wait(200, function () {
-  //     // noop
-  //   });
-  // });
-
-  // it('should test wait with a callback throwing an error', function (next) {
-  //   $expect.Assertion.asyncWait = function (evt, dfd) {
-  //     dfd.then(function () {}, function () {next();});
-  //   };
-
-  //   $expect.Assertion.asyncDone = function (evt, dfd) {
-  //     expect(dfd.state()).to.be('rejected');
-  //   };
-
-  //   $expect.wait(200, function () {
-  //     foobar;
-  //   });
-  // });
-
   it('should correctly test shorthand border-radius', function () {
     $expect('.radius').to.have.css('border-radius', '10px');
   });
