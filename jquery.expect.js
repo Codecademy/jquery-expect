@@ -45,7 +45,7 @@
    * Inspect
    */
 
-  function i (obj) {
+  function inspect (obj) {
     if (obj.selector) {
       return obj.selector;
     } else if (obj[0] && obj[0].tagName) {
@@ -342,8 +342,8 @@
   Assertion.prototype.exist = function (msg) {
     this.assert(
         !!this.obj.length
-        , msg || 'expected ' + i(this.obj) + ' to exist'
-        , msg || 'expected ' + i(this.obj) + ' not to exist');
+        , msg || 'expected ' + inspect(this.obj) + ' to exist'
+        , msg || 'expected ' + inspect(this.obj) + ' not to exist');
     return this;
   };
 
@@ -360,8 +360,8 @@
     var len = this.obj.length;
     this.assert(
         n === len
-      , msg || 'expected ' + i(this.obj) + ' to have a length of ' + n + ' but got ' + len
-      , msg || 'expected ' + i(this.obj) + ' to not have a length of ' + len);
+      , msg || 'expected ' + inspect(this.obj) + ' to have a length of ' + n + ' but got ' + len
+      , msg || 'expected ' + inspect(this.obj) + ' to not have a length of ' + len);
     return this;
   };
 
@@ -377,8 +377,8 @@
   Assertion.prototype.above = function (n, msg) {
     this.assert(
         this.obj.length > n
-      , msg || 'expected ' + i(this.obj) + ' to have a length greater than ' + n
-      , msg || 'expected ' + i(this.obj) + ' to have a length less than ' + n);
+      , msg || 'expected ' + inspect(this.obj) + ' to have a length greater than ' + n
+      , msg || 'expected ' + inspect(this.obj) + ' to have a length less than ' + n);
     return this;
   };
 
@@ -394,8 +394,8 @@
   Assertion.prototype.below = function (n, msg) {
     this.assert(
         this.obj.length < n
-      , msg || 'expected ' + i(this.obj) + ' to have a length less than ' + n
-      , msg || 'expected ' + i(this.obj) + ' to have a length greater than ' + n);
+      , msg || 'expected ' + inspect(this.obj) + ' to have a length less than ' + n
+      , msg || 'expected ' + inspect(this.obj) + ' to have a length greater than ' + n);
     return this;
   };
 
@@ -423,8 +423,8 @@
 
     this.assert(
         eq
-      , msg || 'expected ' + i(this.obj) + ' to equal ' + i($el)
-      , msg || 'expected ' + i(this.obj) + ' to not equal ' + i($el));
+      , msg || 'expected ' + inspect(this.obj) + ' to equal ' + inspect($el)
+      , msg || 'expected ' + inspect(this.obj) + ' to not equal ' + inspect($el));
     return this;
   };
 
@@ -440,13 +440,13 @@
     if (undefined === val) {
       this.assert(
           undefined !== got
-        , msg || 'expected ' + i(this.obj) + ' to have an attribute ' + prop
-        , msg || 'expected ' + i(this.obj) + ' not to have attribute ' + prop);
+        , msg || 'expected ' + inspect(this.obj) + ' to have an attribute ' + prop
+        , msg || 'expected ' + inspect(this.obj) + ' not to have attribute ' + prop);
     } else {
       this.assert(
           got === val
-        , msg || 'expected ' + i(this.obj) + ' to have an attribute ' + prop + ' equals to ' + val
-        , msg || 'expected ' + i(this.obj) + ' to not have an attribute ' + prop + ' equals to ' + val);
+        , msg || 'expected ' + inspect(this.obj) + ' to have an attribute ' + prop + ' equals to ' + val
+        , msg || 'expected ' + inspect(this.obj) + ' to not have an attribute ' + prop + ' equals to ' + val);
     }
 
     return this;
@@ -570,7 +570,7 @@
 
     var obj = this.obj
       , template = function (got) {
-          return msg || 'expected ' + i(obj) + ' to have its ' + prop
+          return msg || 'expected ' + inspect(obj) + ' to have its ' + prop
                       + ' style equal to ' + val + ( got ? ' but got ' + got : '');
         }
       , that = this
@@ -656,24 +656,24 @@
     if ('number' === typeof val) {
       this.assert(
           text.length === val
-        , msg || 'expected ' + i(this.obj) + ' text to be of length ' + val + ' but got ' + text.length
-        , msg || 'expected ' + i(this.obj) + ' text to not be of length ' + val);
+        , msg || 'expected ' + inspect(this.obj) + ' text to be of length ' + val + ' but got ' + text.length
+        , msg || 'expected ' + inspect(this.obj) + ' text to not be of length ' + val);
     } else if (val instanceof RegExp) {
       this.assert(
           val.test(text)
-        , msg || 'expected ' + i(this.obj) + ' text to match ' + String(val)
-        , msg || 'expected ' + i(this.obj) + ' text not to match ' + String(val));
+        , msg || 'expected ' + inspect(this.obj) + ' text to match ' + String(val)
+        , msg || 'expected ' + inspect(this.obj) + ' text not to match ' + String(val));
     } else if (null == val) {
       this.assert(
           !!text.length
-        , msg || 'expected ' + i(this.obj) + ' to have text'
-        , msg || 'expected ' + i(this.obj) + ' to not have text');
+        , msg || 'expected ' + inspect(this.obj) + ' to have text'
+        , msg || 'expected ' + inspect(this.obj) + ' to not have text');
     } else {
       val = String(val);
       this.assert(
           text === val
-        , msg || 'expected ' + i(this.obj) + ' text to be equal to ' + val + ' but got ' + text
-        , msg || 'expected ' + i(this.obj) + ' text to not be equal to ' + val);
+        , msg || 'expected ' + inspect(this.obj) + ' text to be equal to ' + val + ' but got ' + text
+        , msg || 'expected ' + inspect(this.obj) + ' text to not be equal to ' + val);
     }
 
     return this;
@@ -706,8 +706,8 @@
 
     this.assert(
         passing
-      , msg || 'expected ' + i(this.obj) + ' to contain "' + text + '"'
-      , msg || 'expected ' + i(this.obj) + ' not to contain "' + text + '"');
+      , msg || 'expected ' + inspect(this.obj) + ' to contain "' + text + '"'
+      , msg || 'expected ' + inspect(this.obj) + ' not to contain "' + text + '"');
 
     return this;
   };
@@ -746,14 +746,14 @@
               var v = this.obj[fn]();
               this.assert(
                   op(v, val)
-                , msg || 'expected ' + i(this.obj) + ' to have a ' + fn + '  ' + opName + ' ' + val
-                , msg || 'expected ' + i(this.obj) + ' not to have a ' + fn + '  ' + opName + ' ' + val);
+                , msg || 'expected ' + inspect(this.obj) + ' to have a ' + fn + '  ' + opName + ' ' + val
+                , msg || 'expected ' + inspect(this.obj) + ' not to have a ' + fn + '  ' + opName + ' ' + val);
             } else {
               var got;
               this.assert(
                   (got = this.obj[fn]()) === val
-                , msg || 'expected ' + i(this.obj) + ' to have a ' + fn + ' of ' + val + ' but got ' + got
-                , msg || 'expected ' + i(this.obj) + ' not to have a ' + fn + ' of ' + val);
+                , msg || 'expected ' + inspect(this.obj) + ' to have a ' + fn + ' of ' + val + ' but got ' + got
+                , msg || 'expected ' + inspect(this.obj) + ' not to have a ' + fn + ' of ' + val);
             }
 
             return this;
@@ -772,8 +772,8 @@
     var got;
     this.assert(
         (got = this.obj.val()) === val
-      , msg || 'expected ' + i(this.obj) + ' to have value ' + val + ' but got ' + got
-      , msg || 'expected ' + i(this.obj) + ' not to have value ' + val);
+      , msg || 'expected ' + inspect(this.obj) + ' to have value ' + val + ' but got ' + got
+      , msg || 'expected ' + inspect(this.obj) + ' not to have value ' + val);
   };
 
   /**
@@ -787,8 +787,8 @@
     var got;
     this.assert(
         (got = this.obj.html()) === html
-      , msg || 'expected ' + i(this.obj) + ' to have HTML ' + html + ' but got ' + got
-      , msg || 'expected ' + i(this.obj) + ' not to have HTML ' + html);
+      , msg || 'expected ' + inspect(this.obj) + ' to have HTML ' + html + ' but got ' + got
+      , msg || 'expected ' + inspect(this.obj) + ' not to have HTML ' + html);
   };
 
   /**
@@ -810,8 +810,8 @@
 
             this.assert(
                 !!got.length
-              , msg || 'expected ' + i(this.obj) + ' to have ' + fn + ' ' + val
-              , msg || 'expected ' + i(this.obj) + ' not to have ' + fn + ' ' + val);
+              , msg || 'expected ' + inspect(this.obj) + ' to have ' + fn + ' ' + val
+              , msg || 'expected ' + inspect(this.obj) + ' not to have ' + fn + ' ' + val);
 
             this.that = this.which = new Assertion(got);
 
@@ -833,8 +833,8 @@
   Assertion.prototype.a = function (obj, msg) {
     this.assert(
         this.obj.is(obj)
-      , msg || 'expected ' + i(this.obj) + ' to be ' + i(obj)
-      , msg || 'expected ' + i(this.obj) + ' not to be ' + i(obj));
+      , msg || 'expected ' + inspect(this.obj) + ' to be ' + inspect(obj)
+      , msg || 'expected ' + inspect(this.obj) + ' not to be ' + inspect(obj));
     return this;
   };
 
@@ -894,7 +894,7 @@
         };
 
     this.obj.on(evt, callback);
-    return signal(dfd, evt, String(i(this.obj)));
+    return signal(dfd, evt, String(inspect(this.obj)));
   };
 
   /**
@@ -974,8 +974,8 @@
     this.obj.each(function (_, el) {
       that.assert(
           $(el).hasClass(className)
-        , msg || 'expected ' + i(that.obj) + ' to have class ' + className
-        , msg || 'expected ' + i(that.obj) + ' not to have class ' + className);
+        , msg || 'expected ' + inspect(that.obj) + ' to have class ' + className
+        , msg || 'expected ' + inspect(that.obj) + ' not to have class ' + className);
     });
 
     return this;
@@ -992,8 +992,8 @@
           Assertion.prototype[attr] = function (msg) {
             this.assert(
                 this.obj.is(':' + attr)
-              , msg || 'expected ' + i(this.obj) + ' to be ' + attr
-              , msg || 'expected ' + i(this.obj) + ' not to be ' + attr);
+              , msg || 'expected ' + inspect(this.obj) + ' to be ' + attr
+              , msg || 'expected ' + inspect(this.obj) + ' not to be ' + attr);
             return this;
           };
         });
