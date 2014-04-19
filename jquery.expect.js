@@ -968,6 +968,8 @@
    * @param {String|Function} msg
    */
   Assertion.prototype['class'] = function (className, msg) {
+    // Assert we have more than one element.
+    this.above(0);
     var that = this;
     this.obj.each(function (_, el) {
       that.assert(
