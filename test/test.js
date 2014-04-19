@@ -444,4 +444,10 @@ describe('$expect', function () {
   it('should correctly test shorthand border-radius', function () {
     $expect('.radius').to.have.css('border-radius', '10px');
   });
+
+  it('should throw default errors', function () {
+    err(function() {
+      $expect($('.radius')[0]).to.have.children('.foo');
+    }, 'expected div.radius to have children .foo');
+  });
 });

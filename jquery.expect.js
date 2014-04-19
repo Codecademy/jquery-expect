@@ -46,7 +46,25 @@
    */
 
   function i (obj) {
-    return obj.selector || obj;
+    if (obj.selector) {
+      return obj.selector;
+    } else if (obj[0] && obj[0].tagName) {
+      var selector = obj[0].tagName.toLowerCase();
+      var id = obj.attr('id');
+      if (id) {
+        selector += '#' + id;
+      }
+      var classes = obj.attr('class');
+      if (classes) {
+        classes = classes.split(' ');
+        for (var i = 0; i < classes.length; i++) {
+          selector += '.' + classes[i];
+        }
+      }
+      return selector;
+    } else {
+      return obj;
+    }
   }
 
   /**
