@@ -1,7 +1,7 @@
 {
     "name": "jquery.expect"
   , "description": "DOM Assertion library."
-  , "version": "0.0.3"
+  , "version": "0.1.0"
   , "keywords": ["jQuery", "test", "DOM", "Assertion"]
   , "homepage": "http://codecademy.com"
   , "author": "Ryzac, Inc."

@@ -3,7 +3,7 @@
   "repo": "Codeacademy/jquery-expect",
   "description": "DOM Assertion library",
   "keywords": [ "jQuery", "test", "DOM", "assertion", "expect" ],
-  "version": "0.0.3",
+  "version": "0.1.0",
   "license": "MIT",
   "main": "jquery.expect.js",
   "scripts": [ "jquery.expect.js" ],
