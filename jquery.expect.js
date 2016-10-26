@@ -229,7 +229,7 @@
 
   var flags = {
       not: ['to', 'be', 'have', 'include', 'only']
-    , to: ['be', 'have', 'include', 'only', 'not', 'match', 'matchHtml']
+    , to: ['be', 'have', 'include', 'match', 'matchHtml', 'not', 'only']
     , be: []
     , is: []
     , are: []
