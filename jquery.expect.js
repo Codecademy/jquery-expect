@@ -839,7 +839,7 @@
   };
 
   /**
-   * Asserts that the html of an element matches the given regexp
+   * Asserts that the html of an element matches the given regexp.
    *
    * @param {RegExp} regexp
    * @param {String|Function} msg
@@ -855,7 +855,7 @@
   }
 
   /**
-   * Asserts that the text of an element matches the given regexp
+   * Asserts that the text of an element matches the given regexp.
    *
    * @param {RegExp} regexp
    * @param {String|Function} msg
