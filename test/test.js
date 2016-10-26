@@ -365,6 +365,22 @@ describe('$expect', function () {
     
   });
 
+  it('should test for match', function () {
+    $expect('#goog').to.match(/oogl/);
+
+    err(function () {
+      $expect('#goog').to.match(/yahoo/);
+    }, 'expected #goog text to match /yahoo/');
+  });
+
+  it('should test for html match', function () {
+    $expect('#four-list').to.matchHtml(/li class="item"/);
+
+    err(function () {
+      $expect('#four-list').to.match(/div class="child"/);
+    }, 'expected #four-list text to match /div class="child"/');
+  });
+
   it('should test for class', function () {
     $expect('#foolist').to.have.class('order-list');
     

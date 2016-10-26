@@ -229,7 +229,7 @@
 
   var flags = {
       not: ['to', 'be', 'have', 'include', 'only']
-    , to: ['be', 'have', 'include', 'only', 'not']
+    , to: ['be', 'have', 'include', 'only', 'not', 'match', 'matchHtml']
     , be: []
     , is: []
     , are: []
@@ -837,6 +837,34 @@
       , msg || 'expected ' + inspect(this.obj) + ' not to be ' + inspect(obj));
     return this;
   };
+
+  /**
+   * Asserts that the html of an element matches the given regexp
+   *
+   * @param {RegExp} regexp
+   * @param {String|Function} msg
+   * @api public
+   */
+
+  Assertion.prototype.matchHtml = function (regexp, msg) {
+    this.assert(
+        regexp.exec(this.obj.html())
+      , msg || 'expected ' + inspect(this.obj) + ' to match ' + regexp
+      , msg || 'expected ' + inspect(this.obj) + ' not to match ' + regexp);
+    return this;
+  }
+
+  /**
+   * Asserts that the text of an element matches the given regexp
+   *
+   * @param {RegExp} regexp
+   * @param {String|Function} msg
+   * @api public
+   */
+
+  Assertion.prototype.match = function (regexp, msg) {
+    return this.text(regexp, msg);
+  }
 
   /**
    * Returns a new assertion object after calling the jquery end method.
