@@ -867,6 +867,15 @@
     return this.text(regexp, msg);
   }
 
+  /**
+  * Asserts that at least one currently selected element passes the given 
+  * assertion function.
+  *
+  * @param {Function} assertionFn
+  * @param {String} msg
+  * @api public
+  */
+
   Assertion.prototype.any = function (assertionFn, msg) {
     if (!(assertionFn instanceof Function)) {
       throw TypeError('The any assertion must be passed an assertion ' +
