@@ -229,12 +229,13 @@
 
   var flags = {
       not: ['to', 'be', 'have', 'include', 'only']
-    , to: ['be', 'have', 'include', 'only', 'not', 'match', 'matchHtml']
+    , to: ['be', 'have', 'include', 'match', 'matchHtml', 'not', 'only']
     , be: []
     , is: []
     , are: []
     , have: []
     , has: []
+    , any: []
   };
 
   /**
@@ -865,6 +866,36 @@
   Assertion.prototype.match = function (regexp, msg) {
     return this.text(regexp, msg);
   }
+
+  Assertion.prototype.any = function (assertionFn, msg) {
+    if (!(assertionFn instanceof Function)) {
+      throw TypeError('The any assertion must be passed an assertion ' +
+        'function as its first parameter.');
+    }
+
+    var numFailedChildren = 0;
+    this.obj.each(function(_, element) {
+      console.log(element);
+      try {
+        assertionFn(element)
+      } catch (e) {
+        if (e instanceof AssertionError) {
+          numFailedChildren++;
+        } else {
+          throw e;
+        }
+      }
+    });
+
+    this.assert(
+      numFailedChildren < this.obj.length
+      , msg || 'expected ' + inspect(this.obj) + ' to have at least one ' +
+      'element that passed the any assertion'
+      , msg || 'expected ' + inspect(this.obj) + ' to have no elements that ' + 
+      'passed the any assertion'
+      );
+    return this;
+   }
 
   /**
    * Returns a new assertion object after calling the jquery end method.
