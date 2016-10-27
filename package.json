@@ -1,8 +1,14 @@
 {
   "name": "jquery.expect",
   "description": "jQuery based DOM Assertion library",
-  "version": "0.1.0",
-  "keywords": ["jQuery", "test", "DOM", "Assertion", "expect"],
+  "version": "0.2.0",
+  "keywords": [
+    "jQuery",
+    "test",
+    "DOM",
+    "Assertion",
+    "expect"
+  ],
   "homepage": "http://codecademy.com",
   "author": "Codecademy",
   "scripts": {
