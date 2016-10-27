@@ -1,6 +1,8 @@
 // Simple phantom.js integration script
 // Adapted from Bootstrap
 
+var system = require('system');
+
 function waitFor(testFx, onReady, timeOutMillis) {
   var maxtimeOutMillis = timeOutMillis ? timeOutMillis :  10000 //< Default Max Timout is 10000
     , start = new Date().getTime()
@@ -24,7 +26,7 @@ function waitFor(testFx, onReady, timeOutMillis) {
 }
 
 
-if (phantom.args.length === 0 || phantom.args.length > 2) {
+if (system.args.length === 1 || system.args.length > 3) {
   console.log('Usage: phantom.js URL')
   phantom.exit()
 }
@@ -36,7 +38,7 @@ page.onConsoleMessage = function(msg) {
   console.log(msg)
 };
 
-page.open(phantom.args[0], function(status){
+page.open(system.args[1], function(status){
   if (status !== "success") {
     console.log("Unable to access network")
     phantom.exit()

@@ -365,6 +365,38 @@ describe('$expect', function () {
     
   });
 
+  it('should test for match', function () {
+    $expect('#goog').to.match(/oogl/);
+
+    err(function () {
+      $expect('#goog').to.match(/yahoo/);
+    }, 'expected #goog text to match /yahoo/');
+  });
+
+  it('should test for html match', function () {
+    $expect('#four-list').to.matchHtml(/li class="item"/);
+
+    err(function () {
+      $expect('#four-list').to.match(/div class="child"/);
+    }, 'expected #four-list text to match /div class="child"/');
+  });
+
+  it('should test for any', function () {
+    $expect('#four-list').to.have.children('li').that.any(function(li) {
+      $expect(li).to.have.text('item content');
+    });
+
+    err(function () {
+      $expect('#four-list').to.have.children('li').that.any(function(li) {
+        $expect(li).to.have.text('not item content');
+      });
+    }, 'expected #four-list.children(li) to have at least one element that passed the any assertion');
+
+    err(function () {
+      $expect('#four-list').to.have.children('li').that.any('Not Function');
+    }, 'The any assertion must be passed an assertion function as its first parameter.');
+  });
+
   it('should test for class', function () {
     $expect('#foolist').to.have.class('order-list');
     
