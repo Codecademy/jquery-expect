@@ -117,6 +117,13 @@ $expect('.link-1').to.have.text('Codecademy');
 $expect('.link-2').to.have.text('Google', 'Why not?');
 ```
 
+### match
+Asserts that the visible text of an element matches the given RegExp.
+An alias for .text(RegExp).
+```javascript
+$expect('.link-1').to.match(/code/i);
+```
+
 ### contain
 Asserts that an element contains a certain text.  
 By default punctuation, whitespace, and case would be ignored. Pass in a second `true` argument to ensure a strict check.
@@ -152,6 +159,13 @@ Asserts that an element has an html string. Calls `$().html`.
 $expect('body').to.have.html('<div>foo</div>');
 ```
 
+### htmlMatch
+Asserts that the html content of an element matches the given RegExp.
+
+```javascript
+$expect('body').to.matchHtml(/<body><h1>Content/);
+```
+
 ### Traversing
 Asserts the existence of element in different directions of the DOM tree.  
 Relies on jQuery's traversal methods.
@@ -165,6 +179,14 @@ $expect('#so-lonely').to.have.siblings('.party-elements');
 
 ```javascript
 $expect('body').to.have('input');
+```
+
+### any
+Asserts that any element of a collection passes the given expectation callback.
+```javascript
+$expect('ul').to.have.children('li').that.any(function(li) {
+  $expect(li).to.have.text('List Item Content');
+})
 ```
 
 ### class
