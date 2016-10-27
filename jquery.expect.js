@@ -875,7 +875,6 @@
 
     var numFailedChildren = 0;
     this.obj.each(function(_, element) {
-      console.log(element);
       try {
         assertionFn(element)
       } catch (e) {
