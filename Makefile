@@ -1,7 +1,7 @@
 # minify
 
 minify:
-	uglifyjs -nc jquery.expect.js > jquery.expect.min.js
+	uglifyjs -nc -o jquery.expect.min.js -- jquery.expect.js
 
 lint:
 	jshint jquery.expect.js
