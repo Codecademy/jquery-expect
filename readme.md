@@ -235,4 +235,4 @@ $expect('div.container').to.have.siblings('.pane').that.has.css('float', 'left')
 
 ## License
 MIT License.
-Copyright (c) 2012 Amjad Masad &lt;amjad@codecademy.com&gt; Ryzac, Inc.
+Copyright (c) 2022 Codecademy LLC
