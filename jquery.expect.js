@@ -1,6 +1,6 @@
 /*
   MIT License.
-  Copyright (c) 2012 Amjad Masad <amjad@codecademy.com> Ryzac, Inc.
+  Copyright (c) 2022 Codecademy LLC
 */
 
 (function (global, undefined) {
