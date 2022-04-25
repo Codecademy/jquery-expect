@@ -790,6 +790,7 @@
         (got = this.obj.html()) === html
       , msg || 'expected ' + inspect(this.obj) + ' to have HTML ' + html + ' but got ' + got
       , msg || 'expected ' + inspect(this.obj) + ' not to have HTML ' + html);
+    return this;
   };
 
   /**
